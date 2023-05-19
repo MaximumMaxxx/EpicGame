@@ -1,5 +1,8 @@
 package org.example;
 import org.example.Item;
+
+import java.awt.*;
+
 public class Character {
     private int x;
     private int y;
@@ -7,4 +10,5 @@ public class Character {
     //angle ur facing in degrees
     private int speed;
     private Item heldItem;
+    private Graphics graphics;
 }
