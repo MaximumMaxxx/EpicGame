@@ -348,7 +348,7 @@ public final class DrawingPanel implements ImageObserver {
 
     // static variables
     private static boolean DEBUG = false;
-    private static int instances = 0;
+    public static int instances = 0;
     private static Thread shutdownThread = null;
 
     // static class initializer - sets up thread to close program if
@@ -958,6 +958,7 @@ public final class DrawingPanel implements ImageObserver {
      * Closes the DrawingPanel and exits the program.
      */
     private void exit() {
+        System.out.println("Panel is exiting");
         if (isGraphical()) {
             frame.setVisible(false);
             frame.dispose();

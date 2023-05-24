@@ -2,7 +2,7 @@ package org.example;
 
 import java.awt.*;
 
-public class Character {
+public class Player {
     private double x;
     private double y;
     private double angle;
