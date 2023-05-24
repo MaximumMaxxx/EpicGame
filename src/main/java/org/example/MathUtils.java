@@ -10,9 +10,20 @@ public class MathUtils {
      */
     public static double angleToPoint(double x1, double y1, double x2, double y2) {
         return Math.toDegrees(
-                Math.atan(
-                    (x2-x1)/(y2-y1)
+                // Thanks Issac for suggestion atan2 instead of normal atan
+                Math.atan2(
+                    (y2-y1),(x2-x1)
                 )
         );
     }
+
+    public static double degreeSin(double a) {
+        return Math.sin(Math.toRadians(a));
+    }
+
+    public static double degreeCos(double a) {
+        return Math.cos(Math.toRadians(a));
+    }
+
+
 }
