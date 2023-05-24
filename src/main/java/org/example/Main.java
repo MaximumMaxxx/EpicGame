@@ -1,15 +1,18 @@
 package org.example;
+import org.example.DrawingPanel;
 
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         DrawingPanel panel = new DrawingPanel();
-        PanelInput input = new PanelInput(panel);
         Graphics g = panel.getGraphics();
 
-        boolean running = true;
+        Character Character = new Character((double) panel.getWidth() / 2 - 5, (double) panel.getHeight() / 2 - 5, 0, g);
+        Character.render();
+
 
         int x = panel.getWidth() / 2;
         int y = panel.getWidth() / 2;
@@ -28,6 +31,10 @@ public class Main {
             DrawingUtils.lineAlongAngle(g,angle,100,new Point(x,y));
 
 
+        panel.onMouseDrag( (mx,my) -> {
+            mousex = mx;
+            mousey = my;
+        });
 
             panel.sleep(10);
 
