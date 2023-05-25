@@ -12,10 +12,10 @@ public class MathUtils {
         // Thanks Issac for suggestion atan2 instead of normal atan
         double angle = Math.toDegrees(Math.atan2((y2-y1),(x2-x1)));
 
-//        // Atan2 sometimes returns negative angles, this makes sure it is always positive, not technically required but makes the numbers look better
-//        if (angle < 0) {
-//            angle += 360;
-//        }
+        // Atan2 sometimes returns negative angles, this makes sure it is always positive, not technically required but makes the numbers look better
+        if (angle < 0) {
+            angle += 360;
+        }
         return angle;
     }
 
