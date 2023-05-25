@@ -13,7 +13,7 @@ public class Player {
     private Item heldItem;
     private Graphics graphics;
 
-    public Character(double x, double y, double angle, Graphics g) {
+    public Player(double x, double y, double angle, Graphics g) {
         this.x = x;
         this.y = y;
         this.angle = angle;
@@ -32,7 +32,7 @@ public class Player {
     public void render() {
         this.graphics.setColor(Color.GREEN);
         this.graphics.fillOval((int) this.x, (int) this.y, 10, 10);
-        this.graphics.drawLine((int) this.x, (int) this.y, );
+        DrawingUtils.lineAlongAngle(this.graphics, this.angle, 10, new Point((int) this.x + 5, (int) this.y + 5));
     }
 
 }
