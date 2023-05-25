@@ -8,7 +8,6 @@ public class DrawingUtils {
         int yOffset = (int) (MathUtils.degreeSin(angle)*length);
 
 
-        g.setColor(Color.black);
-        g.drawLine(location.x, location.y, location.x+xOffset, location.y+yOffset);
+        g.drawLine((int) location.getx(), (int) location.gety(), (int) (location.getx()+xOffset), (int) (location.gety()+yOffset));
     }
 }

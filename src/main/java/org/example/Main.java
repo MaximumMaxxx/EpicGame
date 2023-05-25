@@ -8,6 +8,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         DrawingPanel panel = new DrawingPanel();
+        PanelInput input = new PanelInput(panel);
         Graphics g = panel.getGraphics();
         boolean running = true;
 
