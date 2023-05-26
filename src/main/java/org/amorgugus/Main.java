@@ -34,7 +34,7 @@ public class Main {
                 character.move(0,-1);
             }
             if (input.keyDown('d')){
-
+                character.move(0,1);
             }
 
 //            int width = 10;

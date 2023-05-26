@@ -25,6 +25,8 @@ public class Player {
         double xcomp = MathUtils.degreeCos(this.angle)*forwardDist;
         double ycomp = MathUtils.degreeSin(this.angle)*forwardDist;
 
+        // TODO! Implement Side move! - Matthew's Job
+
         this.x = this.x + xcomp;
         this.y = this.y + ycomp;
     }
