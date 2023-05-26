@@ -1,6 +1,4 @@
-package org.example;
-
-import org.example.Item;
+package org.amorgugus;
 
 import java.awt.*;
 
@@ -23,8 +21,10 @@ public class Player {
     }
 
     public void move(int forwardDist, int sideDist) {
-        double xcomp = Math.cos(Math.toRadians(this.angle));
-        double ycomp = Math.cos(Math.toRadians(this.angle));
+        // Max helped here
+        double xcomp = MathUtils.degreeCos(this.angle)*forwardDist;
+        double ycomp = MathUtils.degreeSin(this.angle)*forwardDist;
+
         this.x = this.x + xcomp;
         this.y = this.y + ycomp;
     }

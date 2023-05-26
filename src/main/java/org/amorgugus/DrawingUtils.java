@@ -1,4 +1,4 @@
-package org.example;
+package org.amorgugus;
 import java.awt.*;
 
 public class DrawingUtils {

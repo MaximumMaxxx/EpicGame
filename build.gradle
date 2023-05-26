@@ -4,7 +4,7 @@ plugins {
     id 'com.adarshr.test-logger' version '3.2.0'
 }
 
-group 'org.example'
+group 'org.amorgugus'
 version '1.0-SNAPSHOT'
 
 repositories {
@@ -29,7 +29,7 @@ sourceSets {
 
 
 application {
-    mainClass = "org.example.Main"
+    mainClass = "org.amorgugus.Main"
 }
 
 run {

@@ -1,9 +1,6 @@
-package org.example;
-import org.example.DrawingPanel;
+package org.amorgugus;
 
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.util.*;
 
 public class Main {
     private static final int FRAMERATE = 240;
@@ -14,10 +11,6 @@ public class Main {
         boolean running = true;
 
         Player character = new Player((double) panel.getWidth() / 2 - 5, (double) panel.getHeight() / 2 - 5, 0, g);
-
-
-        int x = panel.getWidth() / 2;
-        int y = panel.getWidth() / 2;
 
         int mousex;
         int mousey;
@@ -30,6 +23,19 @@ public class Main {
             mousey = input.getMouseLoc().y;
 
             character.render();
+
+            if (input.keyDown('w')) {
+                character.move(1,0);
+            }
+            if (input.keyDown('s')) {
+                character.move(-1,0);
+            }
+            if (input.keyDown('a')) {
+                character.move(0,-1);
+            }
+            if (input.keyDown('d')){
+
+            }
 
 //            int width = 10;
 //            g.drawRect(x-width/2, y-width/2, 10,10);
