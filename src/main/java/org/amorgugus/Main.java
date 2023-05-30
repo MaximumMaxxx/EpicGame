@@ -37,14 +37,6 @@ public class Main {
                 character.move(0,1);
             }
 
-//            int width = 10;
-//            g.drawRect(x-width/2, y-width/2, 10,10);
-
-//            double angle = MathUtils.angleToPoint(x,y,mousex,mousey);
-//            DrawingUtils.lineAlongAngle(g,angle,100,new Point(x,y));
-
-
-
             panel.sleep(1000/FRAMERATE);
 
             if (DrawingPanel.instances == 0) {
