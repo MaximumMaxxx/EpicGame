@@ -34,8 +34,9 @@ public class Player {
     public void render() {
         this.graphics.setColor(Color.GREEN);
         this.graphics.fillOval((int) this.x, (int) this.y, 10, 10);
-        // Line along angle code added by Max
-        DrawingUtils.lineAlongAngle(this.graphics, this.angle, 10, new Point((int) this.x + 5, (int) this.y + 5));
+        // Line class code done my Max
+        Line line = new Line(new Point(this.x + 5, this.y + 5), this.angle, 10);
+        line.draw(this.graphics);
     }
 
 }

@@ -1,5 +1,7 @@
 package org.amorgugus;
 
+import java.awt.*;
+
 public class MathUtils {
     /**
      * @param x1 The x of the first point
@@ -17,6 +19,23 @@ public class MathUtils {
             angle += 360;
         }
         return angle;
+    }
+
+
+    /**
+     *
+     * Returns the point that's some distance and angle from a location
+     * @param angle
+     * @param length
+     * @param location
+     * @return
+     */
+    public static Point pointAlongAngle(double angle, double length, Point location) {
+        // Trig crap
+        int xOffset = (int) (MathUtils.degreeCos(angle)*length);
+        int yOffset = (int) (MathUtils.degreeSin(angle)*length);
+
+        return new Point(location.getx()+xOffset, location.gety()+yOffset);
     }
 
     public static double degreeSin(double a) {

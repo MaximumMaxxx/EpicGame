@@ -11,12 +11,12 @@ public class DrawingUtils {
      */
     public static void lineAlongAngle(Graphics g, double angle, double length, Point location) {
         // Trig crap
-        int xOffset = (int) (MathUtils.degreeCos(angle)*length);
-        int yOffset = (int) (MathUtils.degreeSin(angle)*length);
+        Point gottenPoint = MathUtils.pointAlongAngle(angle,length,location);
 
-
-        g.drawLine((int) location.getx(), (int) location.gety(), (int) (location.getx()+xOffset), (int) (location.gety()+yOffset));
+        g.drawLine((int) location.getx(), (int) location.gety(), (int) gottenPoint.getx(), (int) gottenPoint.gety());
     }
+
+
 
     /**
      * "Flip" the screen by drawing a white rectangle over the whole screen. Sets color to White - by Max
