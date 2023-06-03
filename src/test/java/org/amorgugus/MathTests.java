@@ -38,4 +38,11 @@ public class MathTests {
         assertEquals(225, MathUtils.angleToPoint(0, 0, -1, -1));
         assertEquals(315, MathUtils.angleToPoint(0, 0, 1, -1));
     }
+
+    @Test
+    public void testIsBetween() {
+        assertTrue(MathUtils.isBetween(0,-1,1));
+        assertTrue(MathUtils.isBetween(0,1,-1));
+        assertFalse(MathUtils.isBetween(3,1,2));
+    }
 }

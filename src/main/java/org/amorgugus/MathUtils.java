@@ -45,4 +45,18 @@ public class MathUtils {
     public static double degreeCos(double a) {
         return Math.cos(Math.toRadians(a));
     }
+
+    /**
+     * Checks if a number is between two other numbers even if the two other numbers are in the wrong order
+     * @param a The number you're checking
+     * @param b Bound 1
+     * @param c Bound 2
+     * @return True if `a` is between the bounds
+     */
+    public static boolean isBetween(double a, double b, double c) {
+        return (
+                (c>=a && b<=a) ||
+                (c<=a && b>=a)
+                );
+    }
 }
