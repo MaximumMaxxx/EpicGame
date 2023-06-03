@@ -11,6 +11,7 @@ public class Player {
     private Item heldItem;
     private Graphics graphics;
 
+
     public Player(double x, double y, double angle, Graphics g) {
         this.x = x;
         this.y = y;
@@ -19,13 +20,27 @@ public class Player {
         this.heldItem = null;
         this.graphics = g;
     }
+    public Point getPoint(){
+        return new Point(this.x, this.y);
+    }
+
+    // Added by Max
+    public Line getLine() {
+        return new Line(new Point(this.x + 5, this.y + 5), this.angle, 1000);
+
+    }
+
+    public void lookAt(Point point){
+    this.angle = MathUtils.angleToPoint(this.x, this.y, point.getx(), point.gety());
+    }
 
     public void move(int forwardDist, int sideDist) {
         // Max helped here
         double xcomp = MathUtils.degreeCos(this.angle)*forwardDist;
         double ycomp = MathUtils.degreeSin(this.angle)*forwardDist;
 
-        // TODO! Implement Side move! - Matthew's Job
+        xcomp += MathUtils.degreeCos(this.angle+90)*sideDist;
+        ycomp += MathUtils.degreeSin(this.angle+90)*sideDist;
 
         this.x = this.x + xcomp;
         this.y = this.y + ycomp;
@@ -35,7 +50,7 @@ public class Player {
         this.graphics.setColor(Color.GREEN);
         this.graphics.fillOval((int) this.x, (int) this.y, 10, 10);
         // Line class code done my Max
-        Line line = new Line(new Point(this.x + 5, this.y + 5), this.angle, 10);
+        Line line = this.getLine();
         line.draw(this.graphics);
     }
 
