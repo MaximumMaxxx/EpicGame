@@ -17,8 +17,15 @@ public class Point {
     }
 
     public double distance(Point otherPoint) {
-        double yDiff = otherPoint.gety()-this.y;
-        double xDiff = otherPoint.getx()-this.x;
+        // Prevent any null pointer errors from
+        // intersect producing null points
+        if (otherPoint == null) {
+            return Double.POSITIVE_INFINITY;
+        }
+
+        //
+        double yDiff = otherPoint.getY()-this.y;
+        double xDiff = otherPoint.getX()-this.x;
 
         return Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
     }
