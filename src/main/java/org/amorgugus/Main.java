@@ -22,10 +22,13 @@ public class Main {
             DrawingUtils.screenFlip(panel, g);
 
             // Variables to render on hud
+
+            Point intersect = character.getLine().getIntersect(tempWall);
+
             String[] hudVars = new String[] {
-                "Intersect point" + character.getLine().getIntersect(tempWall), // Wall intersection
-                "P -> Wall Intersect " + character.getLine().doesIntersect(tempWall),
-                    "Wall -> P Intersect " + tempWall.doesIntersect(character.getLine()),
+                "Intersect point" + intersect, // Wall intersection
+                "View Intersect " + character.getLine().doesIntersect(tempWall),
+                "Intersect distance" + intersect.distance(character.getPoint()),
                 "Player Position " + character.getPoint()
             };
             // End variables

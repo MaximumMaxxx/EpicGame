@@ -76,10 +76,6 @@ public class Line {
             return false;
         }
 
-        System.out.println("p1: " + this.p1);
-        System.out.println("p2: " + this.p2);
-        System.out.println("Inter: " + intersection);
-
         if (
             // If the point is not in the range between p1 and p2 in both x and y return false
                 MathUtils.isBetween(intersection.getx(), this.p1.getx(), this.p2.getx()) &&
