@@ -17,8 +17,8 @@ public class LineTest {
 
         Point intersect = l1.getIntersect(l2);
 
-        assertEquals(0.0, intersect.getx(), ACCEPTABLE_DOUBLE_ERROR);
-        assertEquals(0.0, intersect.gety(), ACCEPTABLE_DOUBLE_ERROR);
+        assertEquals(0.0, intersect.getX(), ACCEPTABLE_DOUBLE_ERROR);
+        assertEquals(0.0, intersect.getY(), ACCEPTABLE_DOUBLE_ERROR);
     }
 
     @Test

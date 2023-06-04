@@ -1,6 +1,9 @@
 package org.amorgugus;
 
 // Line, Linus, Linus tech tip
+// Max
+
+import org.amorgugus.Utils.MathUtils;
 
 import java.awt.*;
 
@@ -34,7 +37,7 @@ public class Line {
     private double calculateIntercept() {
         // b = y1 -m * x1
 
-        return this.p1.gety() - this.slope * this.p1.getx();
+        return this.p1.getY() - this.slope * this.p1.getX();
     }
 
     /**
@@ -43,7 +46,7 @@ public class Line {
      */
     public double calculateSlope() {
         // m=(y2-y1)/(x2-x1)
-        return (p2.gety()-p1.gety())/(p2.getx()-p1.getx());
+        return (p2.getY()-p1.getY())/(p2.getX()-p1.getX());
     }
 
     public Line(Point p1, double angle, double length) {
@@ -78,10 +81,10 @@ public class Line {
 
         if (
             // If the point is not in the range between p1 and p2 in both x and y return false
-                MathUtils.isBetween(intersection.getx(), this.p1.getx(), this.p2.getx()) &&
-                MathUtils.isBetween(intersection.gety(), this.p1.gety(), this.p2.gety()) &&
-                MathUtils.isBetween(intersection.getx(), otherLine.getP1().getx(), otherLine.getP2().getx()) &&
-                MathUtils.isBetween(intersection.gety(), otherLine.getP1().gety(), otherLine.getP2().gety())
+                MathUtils.isBetween(intersection.getX(), this.p1.getX(), this.p2.getX()) &&
+                MathUtils.isBetween(intersection.getY(), this.p1.getY(), this.p2.getY()) &&
+                MathUtils.isBetween(intersection.getX(), otherLine.getP1().getX(), otherLine.getP2().getX()) &&
+                MathUtils.isBetween(intersection.getY(), otherLine.getP1().getY(), otherLine.getP2().getY())
         ) {
             return true;
         }
@@ -93,6 +96,6 @@ public class Line {
      * Draw yourself to the screen
      */
     public void draw(Graphics g) {
-        g.drawLine((int) this.p1.getx(), (int) this.p1.gety(), (int) this.p2.getx(), (int) this.p2.gety());
+        g.drawLine((int) this.p1.getX(), (int) this.p1.getY(), (int) this.p2.getX(), (int) this.p2.getY());
     }
 }

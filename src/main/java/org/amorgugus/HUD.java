@@ -1,6 +1,8 @@
 ///2024256
 package org.amorgugus;
 
+import org.amorgugus.UW.DrawingPanel;
+
 import java.awt.*;
 
 public class HUD {

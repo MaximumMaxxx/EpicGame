@@ -1,6 +1,6 @@
-package org.amorgugus;
+package org.amorgugus.Utils;
 
-import java.awt.*;
+import org.amorgugus.Point;
 
 public class MathUtils {
     /**
@@ -35,7 +35,7 @@ public class MathUtils {
         int xOffset = (int) (MathUtils.degreeCos(angle)*length);
         int yOffset = (int) (MathUtils.degreeSin(angle)*length);
 
-        return new Point(location.getx()+xOffset, location.gety()+yOffset);
+        return new Point(location.getX()+xOffset, location.getY()+yOffset);
     }
 
     public static double degreeSin(double a) {

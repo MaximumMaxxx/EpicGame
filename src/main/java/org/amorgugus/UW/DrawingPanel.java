@@ -1,4 +1,4 @@
-package org.amorgugus;
+package org.amorgugus.UW;
 
 /*
  * =====================================================================

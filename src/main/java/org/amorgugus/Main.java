@@ -1,5 +1,9 @@
 package org.amorgugus;
 
+import org.amorgugus.UW.DrawingPanel;
+import org.amorgugus.UW.PanelInput;
+import org.amorgugus.Utils.DrawingUtils;
+
 import java.awt.*;
 
 public class Main {
@@ -18,20 +22,26 @@ public class Main {
         HUD hud = new HUD(g, panel);
         while (running) {
 
-            // LEAVE THIS HERE
+            // LEAVE THIS HERE {
             DrawingUtils.screenFlip(panel, g);
+            // }
 
             // Variables to render on hud
-
             Point intersect = character.getLine().getIntersect(tempWall);
 
+            double distance;
+            if (intersect != null) {
+                distance = intersect.distance(character.getPoint());
+            } else {
+                distance = Double.POSITIVE_INFINITY;
+            }
+
             String[] hudVars = new String[] {
-                "Intersect point" + intersect, // Wall intersection
+                "Intersect point" + intersect,
                 "View Intersect " + character.getLine().doesIntersect(tempWall),
-                "Intersect distance" + intersect.distance(character.getPoint()),
+                "Intersect distance" + distance,
                 "Player Position " + character.getPoint()
             };
-            // End variables
 
             hud.render(hudVars);
             g.setColor(Color.green);
@@ -45,11 +55,6 @@ public class Main {
 
             g.setColor(Color.orange);
             tempWall.draw(g);
-
-            if (tempWall.doesIntersect(character.getLine())) {
-                System.out.println("They intersect");
-            }
-
 
 
             if (input.keyDown('w')) {

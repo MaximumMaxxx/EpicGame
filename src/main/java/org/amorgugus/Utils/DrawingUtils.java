@@ -1,4 +1,8 @@
-package org.amorgugus;
+package org.amorgugus.Utils;
+import org.amorgugus.Point;
+import org.amorgugus.UW.DrawingPanel;
+import org.amorgugus.Utils.MathUtils;
+
 import java.awt.*;
 
 public class DrawingUtils {
@@ -9,11 +13,11 @@ public class DrawingUtils {
      * @param length The length of the line
      * @param location The location of the line
      */
-    public static void lineAlongAngle(Graphics g, double angle, double length, Point location) {
+    public static void lineAlongAngle(Graphics g, double angle, double length, org.amorgugus.Point location) {
         // Trig crap
         Point gottenPoint = MathUtils.pointAlongAngle(angle,length,location);
 
-        g.drawLine((int) location.getx(), (int) location.gety(), (int) gottenPoint.getx(), (int) gottenPoint.gety());
+        g.drawLine((int) location.getX(), (int) location.getY(), (int) gottenPoint.getX(), (int) gottenPoint.getY());
     }
 
 

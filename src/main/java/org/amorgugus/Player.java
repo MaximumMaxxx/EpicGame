@@ -1,5 +1,7 @@
 package org.amorgugus;
 
+import org.amorgugus.Utils.MathUtils;
+
 import java.awt.*;
 
 public class Player {
@@ -31,7 +33,7 @@ public class Player {
     }
 
     public void lookAt(Point point){
-    this.angle = MathUtils.angleToPoint(this.x, this.y, point.getx(), point.gety());
+    this.angle = MathUtils.angleToPoint(this.x, this.y, point.getX(), point.getY());
     }
 
     public void move(int forwardDist, int sideDist) {

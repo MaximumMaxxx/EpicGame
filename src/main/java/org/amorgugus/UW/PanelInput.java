@@ -1,4 +1,4 @@
-package org.amorgugus;
+package org.amorgugus.UW;
 
 /*
  * =====================================================================
@@ -19,6 +19,8 @@ package org.amorgugus;
  * and then polls for and responds to events and state as desired.
  * See JavaDoc comments below for more information.
  */
+
+import org.amorgugus.UW.DrawingPanel;
 
 import java.util.*;
 import java.awt.Point;
