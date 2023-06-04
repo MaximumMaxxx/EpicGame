@@ -16,6 +16,13 @@ public class Point {
         return this.y;
     }
 
+    public double distance(Point otherPoint) {
+        double yDiff = otherPoint.gety()-this.y;
+        double xDiff = otherPoint.getx()-this.x;
+
+        return Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
+    }
+
     public String toString() {
         return "(x: " + this.x + ", y: " + this.y + ")";
     }
