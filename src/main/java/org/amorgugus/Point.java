@@ -9,13 +9,26 @@ public class Point {
         this.y = y;
 
     }
-    public double getx(){
+    public double getX(){
         return this.x;
     }
-    public double gety(){
+    public double getY(){
         return this.y;
     }
 
+    public void setX(double value) {
+        this.x = value;
+    }
+
+    public void setY(double value) {
+        this.y = value;
+    }
+
+    /**
+     * Returns the distance between this point and another point using pythagorean theorem
+     * @param otherPoint the point you want to see the distance to
+     * @return The distance or Double.POSITIVE_INFINITY if Point is null
+     */
     public double distance(Point otherPoint) {
         // Prevent any null pointer errors from
         // intersect producing null points
