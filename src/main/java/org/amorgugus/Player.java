@@ -26,9 +26,19 @@ public class Player {
         return new Point(this.x, this.y);
     }
 
+    // Added by max
+    public double getAngle() {
+        return this.angle;
+    }
+
     // Added by Max
     public Line getLine() {
-        return new Line(new Point(this.x + 5, this.y + 5), this.angle, 1000);
+        return new Line(new Point(this.x + 5, this.y + 5), this.angle, Consts.PLAYER_MAX_VIEW_DISTANCE);
+    }
+
+    // Also added by Max
+    public Line getLine(double angle) {
+        return new Line(new Point(this.x + 5, this.y + 5), angle, Consts.PLAYER_MAX_VIEW_DISTANCE);
 
     }
 

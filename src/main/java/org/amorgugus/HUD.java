@@ -30,4 +30,3 @@ public class HUD {
             this.graphics.drawString(vars[i], 20, h+(i*12));
         }
     }
-}

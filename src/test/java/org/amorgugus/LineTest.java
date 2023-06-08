@@ -29,4 +29,11 @@ public class LineTest {
         assertTrue(l1.doesIntersect(l2));
 
     }
+
+    @Test
+    public void pointSlopeFormTest() {
+        Line line = new Line(1,10, 10);
+        assertEquals(-10, line.getP1().getX());
+        assertEquals(0, line.getP1().getY());
+    }
 }

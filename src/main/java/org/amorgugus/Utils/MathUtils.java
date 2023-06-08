@@ -59,4 +59,15 @@ public class MathUtils {
                 (c<=a && b>=a)
                 );
     }
+
+    /**
+     * Linearly interpolates between two points
+     * @param bound1 The first bound
+     * @param bound2 The second bound
+     * @param percentage A value between 0 and 1 which represents how far between the bounds you are
+     * @return the lerped result
+     */
+    public static double lerp(double bound1, double bound2, double percentage) {
+        return (bound2 - bound1) * percentage;
+    }
 }

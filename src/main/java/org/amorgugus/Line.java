@@ -25,6 +25,20 @@ public class Line {
         this.intercept = calculateIntercept();
     }
 
+    public Line(Point p1, double angle, double length) {
+        this.p1 = p1;
+        this.p2 = MathUtils.pointAlongAngle(angle, length, p1);
+        this.slope = calculateSlope();
+        this.intercept=calculateIntercept();
+    }
+
+    public Line(double slope, double yIntercept, double length) {
+        this.slope = slope;
+        this.intercept = yIntercept;
+        this.p1 = new Point(-length,(slope*-length+yIntercept));
+        this.p2 = new Point(length,(slope*length+yIntercept));
+    }
+
     public Point getP1() {
         return p1;
     }
@@ -49,12 +63,6 @@ public class Line {
         return (p2.getY()-p1.getY())/(p2.getX()-p1.getX());
     }
 
-    public Line(Point p1, double angle, double length) {
-        this.p1 = p1;
-        this.p2 = MathUtils.pointAlongAngle(angle, length, p1);
-        this.slope = calculateSlope();
-        this.intercept=calculateIntercept();
-    }
 
     /**
      * Checks if this line intersects with another line
@@ -92,10 +100,16 @@ public class Line {
         return false;
     }
 
+
     /**
      * Draw yourself to the screen
      */
     public void draw(Graphics g) {
         g.drawLine((int) this.p1.getX(), (int) this.p1.getY(), (int) this.p2.getX(), (int) this.p2.getY());
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.p1.getX() + ", " + this.p1.getY() + ") <-> ("+this.p2.getX() + ", " + this.p2.getY() + ")";
     }
 }
