@@ -1,6 +1,12 @@
 package org.amorgugus.Utils;
 
+import org.amorgugus.Line;
 import org.amorgugus.Point;
+import org.amorgugus.Wall;
+
+import java.util.Arrays;
+import java.util.Dictionary;
+import java.util.List;
 
 public class MathUtils {
     /**
@@ -69,5 +75,23 @@ public class MathUtils {
      */
     public static double lerp(double bound1, double bound2, double percentage) {
         return (bound2 - bound1) * percentage;
+    }
+
+    public static double clamp(double a, double b, double c) {
+        double[] arr = new double[] {
+                a,b,c
+        };
+        return  Arrays.stream(arr).sorted().toArray()[1];
+    }
+
+    public static void getIntersections(Wall[] walls, Line playerLine, List<Point> intersections, Dictionary<Point, Wall> pointWallDictionary) {
+        for (Wall wall :
+                walls) {
+            if (playerLine.doesIntersect(wall)) {
+                Point intersect = playerLine.getIntersect(wall);
+                intersections.add(intersect);
+                pointWallDictionary.put(intersect, wall);
+            }
+        }
     }
 }

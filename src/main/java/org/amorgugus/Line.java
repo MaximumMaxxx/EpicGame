@@ -87,19 +87,28 @@ public class Line {
             return false;
         }
 
-        if (
-            // If the point is not in the range between p1 and p2 in both x and y return false
-                MathUtils.isBetween(intersection.getX(), this.p1.getX(), this.p2.getX()) &&
-                MathUtils.isBetween(intersection.getY(), this.p1.getY(), this.p2.getY()) &&
-                MathUtils.isBetween(intersection.getX(), otherLine.getP1().getX(), otherLine.getP2().getX()) &&
-                MathUtils.isBetween(intersection.getY(), otherLine.getP1().getY(), otherLine.getP2().getY())
-        ) {
-            return true;
-        }
-
-        return false;
+        // The point only intersects if it's within the bounds of both lines
+        // Need to check both ways otherwise you get some goofy fun issues
+        return (
+                        this.isPointWithinBounds(intersection) &&
+                        otherLine.isPointWithinBounds(intersection)
+                );
     }
 
+
+    /**
+     * Checks whether some Point p is within the "bounding box"
+     * or rectangle that could be formed from the two points that make up the line
+     * @param p The point used for checking if it's within the bounds
+     * @return true if the bounds contain the point
+     */
+    public boolean isPointWithinBounds(Point p) {
+        return (
+                MathUtils.isBetween(p.getX(), this.p1.getX(), this.p2.getX()) &&
+                MathUtils.isBetween(p.getY(), this.p1.getY(), this.p2.getY())
+        );
+
+    }
 
     /**
      * Draw yourself to the screen

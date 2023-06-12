@@ -31,4 +31,11 @@ public class DrawingUtils {
         g.setColor(Color.WHITE);
         g.fillRect(0,0,p.getWidth(),p.getHeight());
     }
+
+    public static void drawFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
+        g.setColor(new Color(80, 158, 204));
+        g.fillRect(0,0, panel.getWidth(), middle);
+        g.setColor(new Color(45, 122, 39));
+        g.fillRect(0, middle, panel.getWidth(), panel.getHeight());
+    }
 }

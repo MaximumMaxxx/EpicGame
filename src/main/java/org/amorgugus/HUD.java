@@ -10,13 +10,16 @@ public class HUD {
     private Graphics graphics;
     private DrawingPanel panel;
 
-
     public HUD(Graphics g, DrawingPanel panel) {
         this.heldItem = null;
         this.graphics = g;
         this.panel = panel;
-
     }
+
+    public int getPlayerViewAbleArea() {
+        return this.panel.getHeight() * 3/4;
+    }
+
 
     public void render(String[] vars) {
         this.graphics.setColor(Color.BLACK);
