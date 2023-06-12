@@ -17,7 +17,7 @@ public class HUD {
     }
 
     public int getPlayerViewAbleArea() {
-        return this.panel.getHeight() * 3/4;
+        return this.panel.getHeight() * 3 / 4;
     }
 
 
@@ -30,13 +30,15 @@ public class HUD {
         this.graphics.setColor(Color.BLACK);
         this.graphics.fillRect(0, getPlayerViewAbleArea(), panel.getWidth(), panel.getHeight());
         this.graphics.setColor(Color.ORANGE);
+//        this.graphics.drawString( 20, (panel.getHeight()*3/4+10));
+
         int h = (panel.getHeight() * 3 / 4) + 10;
         for (int i = 0; i < vars.length; i++) {
             this.graphics.drawString(vars[i], 20, h + (i * 12));
         }
             this.graphics.setColor(Color.RED);
-            this.graphics.fillRect(400,(panel.getHeight() * 3 / 4 + 50),100,20);
+            this.graphics.fillRect(400,(this.getPlayerViewAbleArea() + 50),100,20);
             this.graphics.setColor(Color.GREEN);
-            this.graphics.fillRect(400,(panel.getHeight() * 3 / 4 + 50),health,20);
+            this.graphics.fillRect(400,(this.getPlayerViewAbleArea() + 50),health,20);
         }
     }

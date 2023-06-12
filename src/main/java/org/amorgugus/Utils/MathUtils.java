@@ -94,4 +94,20 @@ public class MathUtils {
             }
         }
     }
+
+    /**
+     * Checks if a line intersects any of the walls, returns the point of intersection or null if there is none
+     * @param walls The walls to check
+     * @param l The line to check
+     * @return The point of intersection or null if there is none
+     */
+    public static Point doesIntersectWall(Wall[] walls, Line l) {
+        for (Wall wall :
+                walls) {
+            if (l.doesIntersect(wall)) {
+                return l.getIntersect(wall);
+            }
+        }
+        return null;
+    }
 }

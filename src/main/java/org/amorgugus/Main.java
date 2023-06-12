@@ -3,12 +3,9 @@ package org.amorgugus;
 import org.amorgugus.UW.DrawingPanel;
 import org.amorgugus.UW.PanelInput;
 import org.amorgugus.Utils.DrawingUtils;
-import org.amorgugus.Utils.MathUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws AWTException {
@@ -63,77 +60,23 @@ public class Main {
             double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
 
             g.setColor(Color.RED);
-            if(Consts.DEBUG_RENDERING) {
+
+            int middle = hud.getPlayerViewAbleArea()/2;
+
+            DrawingUtils.drawFloorAndCieling(panel, g, middle);
+
+            DrawingUtils.drawWalls(panel, g, character, walls, degreesPerPixel, viewAngleOffset);
+            if (Consts.DEBUG_RENDERING) {
                 character.render();
                 for (Wall wall :
                         walls) {
                     wall.draw(g);
                 }
 
-                Line viewcone = character.getLine(viewAngleOffset);
-                viewcone.draw(g);
-            }
-
-            int middle = hud.getPlayerViewAbleArea()/2;
-
-            DrawingUtils.drawFloorAndCieling(panel, g, middle);
-
-            for (int pixel = 0; pixel < panel.getWidth(); pixel++) {
-                double viewAngle = degreesPerPixel * pixel;
-
-                Line playerLine = character.getLine(viewAngle+viewAngleOffset);
-
-                List<Point> intersections = new ArrayList<>();
-                Dictionary<Point, Wall> pointWallDictionary = new Hashtable<>();
-                MathUtils.getIntersections(walls, playerLine, intersections, pointWallDictionary);
-
-                if (intersections.size() > 0) {
-                    intersections.sort((o1, o2) -> (int) (o1.distance(character.getPoint()) - o2.distance(character.getPoint())));
-
-                    Point closestIntersect = intersections.get(0);
-                    Wall closestWall = pointWallDictionary.get(closestIntersect);
-
-
-                    double characterAngle = character.getAngle();
-                    Point characterPoint = character.getPoint();
-                    Point shiftedPlayerpos = new Point(characterPoint.getX()+5,characterPoint.getY()+5);
-                    Point p1 = MathUtils.pointAlongAngle(characterAngle+90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
-                    Point p2 = MathUtils.pointAlongAngle(characterAngle-90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
-                    if (Consts.DEBUG_RENDERING) {
-                        Line playerLineForPerpIntersection = new Line(p1, p2);
-                        g.setColor(Color.RED);
-                        playerLineForPerpIntersection.draw(g);
-                    }
-
-
-                    // I have no idea how this works
-                    // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
-                    double perpDistance = Math.abs((p2.getX()-p1.getX())*(p1.getY()-closestIntersect.getY())-(p1.getX()-closestIntersect.getX())*(p2.getY()-p1.getY()))/Math.sqrt(Math.pow((p2.getX()-p1.getX()),2)+Math.pow((p2.getY()-p1.getY()),2));
-
-                    double height = Consts.BASE_WALL_HEIGHT / perpDistance;
-
-
-                    int midPoint = (panel.getHeight()*3/4)/2;
-
-//                    double d1 = closestWall.getP1().distance(closestIntersect);
-//                    double d2 = closestWall.getP2().distance(closestIntersect);
-
-
-
-
-//                    double wallLength = closestWall.getP1().distance(closestWall.getP2());
-                    Color wallColor = closestWall.getColor();
-//                    double wallCornerScaleFactor = MathUtils.clamp(0,1, -Math.abs(Math.min(d1,d2)-wallLength/2)+wallLength/2*.9);
-                    double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE));
-                    Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
-                    g.setColor(displayColor);
-                    g.drawLine(pixel, (int) ( midPoint+height/2), pixel, (int) ( midPoint-height/2));
-                }
-
-            }
-            if (Consts.DEBUG_RENDERING) {
-                Line viewcone = character.getLine(degreesPerPixel * panel.getWidth() + viewAngleOffset);
-                viewcone.draw(g);
+                Line viewConeLine = character.getLine(viewAngleOffset);
+                viewConeLine.draw(g);
+                viewConeLine = character.getLine(degreesPerPixel * panel.getWidth() + viewAngleOffset);
+                viewConeLine.draw(g);
                 g.setColor(Color.RED);
             }
 
@@ -151,16 +94,16 @@ public class Main {
 
 
             if (input.keyDown('w')) {
-                character.move(1,0);
+                character.move(1,0, walls);
             }
             if (input.keyDown('s')) {
-                character.move(-1,0);
+                character.move(-1,0, walls);
             }
             if (input.keyDown('a')) {
-                character.move(0,-1);
+                character.move(0,-1, walls);
             }
             if (input.keyDown('d')){
-                character.move(0,1);
+                character.move(0,1, walls);
             }
 
 

@@ -1,9 +1,14 @@
 package org.amorgugus.Utils;
+import org.amorgugus.*;
 import org.amorgugus.Point;
 import org.amorgugus.UW.DrawingPanel;
 import org.amorgugus.Utils.MathUtils;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.List;
 
 public class DrawingUtils {
     /**
@@ -37,5 +42,55 @@ public class DrawingUtils {
         g.fillRect(0,0, panel.getWidth(), middle);
         g.setColor(new Color(45, 122, 39));
         g.fillRect(0, middle, panel.getWidth(), panel.getHeight());
+    }
+
+    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, double degreesPerPixel, double viewAngleOffset) {
+        for (int pixel = 0; pixel < panel.getWidth(); pixel++) {
+            double viewAngle = degreesPerPixel * pixel;
+
+            Line playerLine = character.getLine(viewAngle+ viewAngleOffset);
+
+            List<Point> intersections = new ArrayList<>();
+            Dictionary<Point, Wall> pointWallDictionary = new Hashtable<>();
+            MathUtils.getIntersections(walls, playerLine, intersections, pointWallDictionary);
+
+            // We only need to draw a wall if there is an intersection
+            if (intersections.size() > 0) {
+                intersections.sort((o1, o2) -> (int) (o1.distance(character.getPoint()) - o2.distance(character.getPoint())));
+
+                Point closestIntersect = intersections.get(0);
+                Wall closestWall = pointWallDictionary.get(closestIntersect);
+
+
+                double characterAngle = character.getAngle();
+                Point characterPoint = character.getPoint();
+                Point shiftedPlayerpos = new Point(characterPoint.getX()+5,characterPoint.getY()+5);
+                Point p1 = MathUtils.pointAlongAngle(characterAngle+90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
+                Point p2 = MathUtils.pointAlongAngle(characterAngle-90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
+                if (Consts.DEBUG_RENDERING) {
+                    Line playerLineForPerpIntersection = new Line(p1, p2);
+                    g.setColor(Color.RED);
+                    playerLineForPerpIntersection.draw(g);
+                }
+
+
+                // I have no idea how this works
+                // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+                double perpDistance = Math.abs((p2.getX()-p1.getX())*(p1.getY()-closestIntersect.getY())-(p1.getX()-closestIntersect.getX())*(p2.getY()-p1.getY()))/Math.sqrt(Math.pow((p2.getX()-p1.getX()),2)+Math.pow((p2.getY()-p1.getY()),2));
+
+                double height = Consts.BASE_WALL_HEIGHT / perpDistance;
+
+
+                int midPoint = (panel.getHeight()*3/4)/2;
+
+                Color wallColor = closestWall.getColor();
+//                    double wallCornerScaleFactor = MathUtils.clamp(0,1, -Math.abs(Math.min(d1,d2)-wallLength/2)+wallLength/2*.9);
+                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE));
+                Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
+                g.setColor(displayColor);
+                g.drawLine(pixel, (int) ( midPoint+height/2), pixel, (int) ( midPoint-height/2));
+            }
+
+        }
     }
 }

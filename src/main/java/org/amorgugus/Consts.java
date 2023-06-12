@@ -8,5 +8,5 @@ public class Consts {
 
     public static final double VIEW_SCALE_FACTOR = 1;
     public static int BASE_WALL_HEIGHT = 4000; // When you are 0 distance from a wall it will be 1000 pixels tall.
-    public static final boolean DEBUG_RENDERING = false;
+    public static final boolean DEBUG_RENDERING = true;
 }

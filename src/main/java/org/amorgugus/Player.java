@@ -50,15 +50,37 @@ public class Player {
     // Also added by Max
     public Line getLine(double angle) {
         return new Line(new Point(this.x + 5, this.y + 5), angle, Consts.PLAYER_MAX_VIEW_DISTANCE);
-
     }
+
+    // added by Max
+    public Line getLine(double angle, double distance) {
+        return new Line(new Point(this.x + 5, this.y + 5), angle, distance);
+    }
+
 
     public void lookAt(Point point){
     this.angle = MathUtils.angleToPoint(this.x, this.y, point.getX(), point.getY());
     }
 
-    public void move(int forwardDist, int sideDist) {
+    public void move(int forwardDist, int sideDist, Wall[] walls) {
+
         // Max helped here
+        // Collision detection added by Max
+        Line forwardLine = this.getLine(this.angle, forwardDist*10);
+        this.graphics.setColor(Color.RED);
+        forwardLine.draw(this.graphics);
+        Point intersect = MathUtils.doesIntersectWall(walls, forwardLine);
+        if (intersect != null) {
+            forwardDist=0;
+//            forwardDist = (int) intersect.distance(this.getPoint());
+        }
+
+        Line sideLine = this.getLine(this.angle+90, sideDist*10);
+        sideLine.draw(this.graphics);
+        intersect = MathUtils.doesIntersectWall(walls, sideLine);
+        if (intersect != null) {
+            sideDist = 0;
+        }
         double xcomp = MathUtils.degreeCos(this.angle)*forwardDist*speed;
         double ycomp = MathUtils.degreeSin(this.angle)*forwardDist*speed;
 

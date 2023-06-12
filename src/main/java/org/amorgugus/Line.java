@@ -65,7 +65,8 @@ public class Line {
 
 
     /**
-     * Checks if this line intersects with another line
+     * Get the intersection point of the current line and another line.
+     * Does not do bounds.
      * @param otherLine The line you want to check intersection with
      */
     public Point getIntersect(Line otherLine) {
