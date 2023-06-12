@@ -2035,6 +2035,7 @@ public final class DrawingPanel implements ImageObserver {
                     panel.repaint();
                     // toFront(frame);
                 } catch (Exception e) {
+
                     // empty
                 }
             }
@@ -2128,8 +2129,7 @@ public final class DrawingPanel implements ImageObserver {
         // used for an internal timer that keeps repainting
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() instanceof Timer) {
-                // redraw the screen at regular intervals to catch all paint operations
-                panel.repaint();
+
                 if (shouldDiff() &&
                     System.currentTimeMillis() > createTime + 4 * DELAY) {
                     String expected = System.getProperty(DIFF_PROPERTY);
