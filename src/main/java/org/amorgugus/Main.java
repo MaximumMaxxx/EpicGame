@@ -26,10 +26,17 @@ public class Main {
         Player character = new Player((double) panel.getWidth() / 2 - 5, (double) panel.getHeight() / 2 - 5, 0, g);
 
         Wall[] walls = new Wall[] {
-                new Wall(new Point(66,58), new Point(228,19), 1, Color.orange),
-                new Wall(new Point(228,19), new Point(182,97), 1, Color.orange),
-                new Wall(new Point(182,97), new Point(42,90), 1, Color.orange),
-                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
+                new Wall(new Point(0,1), new Point(0,720), 1, Color.orange),
+                new Wall(new Point(0,0), new Point(1280,0), 1, Color.orange),
+                new Wall(new Point(0,720), new Point(1280,720), 1, Color.orange),
+                new Wall(new Point(1280,1), new Point(1280,720), 1, Color.orange),
+
+
+                new Wall(new Point(0,100), new Point(100,0), 1, Color.orange),
+                new Wall(new Point(200,100), new Point(200,150), 1, Color.orange),
+                new Wall(new Point(200,100), new Point(500,101), 1, Color.orange),
+                new Wall(new Point(200,150), new Point(200,100), 1, Color.orange),
+//                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
         };
 
 
