@@ -2,7 +2,7 @@ package org.amorgugus.Utils;
 import org.amorgugus.*;
 import org.amorgugus.Point;
 import org.amorgugus.UW.DrawingPanel;
-import org.amorgugus.Utils.MathUtils;
+import org.amorgugus.Consts;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -78,13 +78,26 @@ public class DrawingUtils {
                 // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
                 double perpDistance = Math.abs((p2.getX()-p1.getX())*(p1.getY()-closestIntersect.getY())-(p1.getX()-closestIntersect.getX())*(p2.getY()-p1.getY()))/Math.sqrt(Math.pow((p2.getX()-p1.getX()),2)+Math.pow((p2.getY()-p1.getY()),2));
 
-                double height = Consts.BASE_WALL_HEIGHT / perpDistance;
+                double height = (closestWall.getHeightMultiplier() * Consts.BASE_WALL_HEIGHT) / perpDistance;
 
 
                 int midPoint = (panel.getHeight()*3/4)/2;
 
                 Color wallColor = closestWall.getColor();
-//                    double wallCornerScaleFactor = MathUtils.clamp(0,1, -Math.abs(Math.min(d1,d2)-wallLength/2)+wallLength/2*.9);
+
+                // WALL CORNER SCALE FACTOR CODE
+                double wallLength = closestWall.getP1().distance(closestWall.getP2());
+                double intersectionToP1 = closestWall.getP1().distance(closestIntersect);
+
+                double a = (-Consts.WALL_CORNER_PARABOLA_HEIGHT)/Math.pow((wallLength/2),2);
+
+                double wallCornerScaleFactor = a*Math.pow((10-intersectionToP1-wallLength/2),2)+Consts.WALL_CORNER_PARABOLA_HEIGHT;
+                wallCornerScaleFactor = MathUtils.lerp(0,Consts.WALL_CORNER_PARABOLA_HEIGHT,wallCornerScaleFactor/Consts.WALL_CORNER_PARABOLA_HEIGHT)/Consts.WALL_CORNER_PARABOLA_HEIGHT;
+//                System.out.println(wallCornerScaleFactor);
+
+
+
+
                 double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE));
                 Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
                 g.setColor(displayColor);

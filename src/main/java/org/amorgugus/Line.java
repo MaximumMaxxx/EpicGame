@@ -74,8 +74,32 @@ public class Line {
             return null;
         }
 
-        double x = (otherLine.intercept - this.intercept) / (this.slope - otherLine.slope);
-        double y = this.slope * x + this.intercept;
+        double x;
+        double y;
+        final double largeNumber = Integer.MAX_VALUE;
+        final double smallNumber = 0.0001;
+        if (Math.abs(this.slope) > largeNumber){
+            x = this.getP1().getX();
+            y = otherLine.slope * this.getP1().getX() + otherLine.intercept;
+        }
+        else if (Math.abs(otherLine.slope) > largeNumber) {
+            x = otherLine.getP1().getX();
+            y = this.slope * otherLine.getP1().getX() + this.intercept;
+//        } else if (Math.abs(otherLine.slope) < smallNumber) {
+//            y = otherLine.intercept;
+//            x = (y+this.intercept)/this.slope;
+//            System.out.println("Using third formula");
+//        } else if (Math.abs(this.slope) < smallNumber) {
+//            y = this.intercept;
+//            x = (y+otherLine.intercept)/otherLine.slope;
+//            System.out.println("Using fourth formula");
+        } else {
+            // https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment
+            x = (otherLine.intercept - this.intercept) / (this.slope - otherLine.slope);
+            y = this.slope * x + this.intercept;
+        }
+
+
 
         return new Point(x, y);
     }

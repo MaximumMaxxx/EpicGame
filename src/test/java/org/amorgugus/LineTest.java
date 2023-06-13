@@ -36,4 +36,12 @@ public class LineTest {
         assertEquals(-10, line.getP1().getX());
         assertEquals(0, line.getP1().getY());
     }
+
+    @Test
+    public void horizontalLineIntersect() {
+        Line line = new Line(new Point(0,5), new Point(5,5));
+        Line line2 = new Line(new Point(2,6), new Point(6,2));
+        Point intersect = line2.getIntersect(line);
+        assertEquals(3,intersect.getX());
+    }
 }
