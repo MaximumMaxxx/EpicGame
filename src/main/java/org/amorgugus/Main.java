@@ -16,10 +16,8 @@ public class Main {
         BufferedImage offscreen = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = offscreen.getGraphics();
         Robot robot = new Robot();
+        int frameCount = 0;
 
-
-        // Init the initial wall height based on the panel size
-        Consts.BASE_WALL_HEIGHT = 20 * panel.getHeight();
 
         boolean running = true;
 
@@ -42,6 +40,7 @@ public class Main {
 
         int mousex;
         int mousey;
+        boolean moved = false;
 
 
         HUD hud = new HUD(g, panel);
@@ -63,16 +62,15 @@ public class Main {
             robot.mouseMove(zeroPos, 1000);
             //remember to move
 
-            double degreesPerPixel = Consts.FOV/panel.getWidth();
-            double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
 
             g.setColor(Color.RED);
 
             int middle = hud.getPlayerViewAbleArea()/2;
 
+//            DrawingUtils.moodyFloorAndCieling(panel, g, middle);
             DrawingUtils.drawFloorAndCieling(panel, g, middle);
 
-            DrawingUtils.drawWalls(panel, g, character, walls, degreesPerPixel, viewAngleOffset);
+            DrawingUtils.drawWalls(panel, g, character, walls, frameCount, moved);
             if (Consts.DEBUG_RENDERING) {
                 character.render();
                 for (Wall wall :
@@ -80,6 +78,8 @@ public class Main {
                     wall.draw(g);
                 }
 
+                double degreesPerPixel = Consts.FOV/panel.getWidth();
+                double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
                 Line viewConeLine = character.getLine(viewAngleOffset);
                 viewConeLine.draw(g);
                 viewConeLine = character.getLine(degreesPerPixel * panel.getWidth() + viewAngleOffset);
@@ -97,17 +97,22 @@ public class Main {
             g.setColor(Color.green);
 
 
+            moved = false;
             if (input.keyDown('w')) {
                 character.move(1,0, walls);
+                moved = true;
             }
             if (input.keyDown('s')) {
                 character.move(-1,0, walls);
+                moved = true;
             }
             if (input.keyDown('a')) {
                 character.move(0,-1, walls);
+                moved = true;
             }
             if (input.keyDown('d')){
                 character.move(0,1, walls);
+                moved = true;
             }
             if (input.keyDown('q')) {
                 // Exit
@@ -123,6 +128,7 @@ public class Main {
             if (DrawingPanel.instances == 0) {
                 running = false;
             }
+            frameCount++;
         }
 
     }

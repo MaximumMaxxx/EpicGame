@@ -25,8 +25,6 @@ public class DrawingUtils {
         g.drawLine((int) location.getX(), (int) location.getY(), (int) gottenPoint.getX(), (int) gottenPoint.getY());
     }
 
-
-
     /**
      * "Flip" the screen by drawing a white rectangle over the whole screen. Sets color to White - by Max
      * @param p The DrawingPanel
@@ -37,6 +35,12 @@ public class DrawingUtils {
         g.fillRect(0,0,p.getWidth(),p.getHeight());
     }
 
+    /**
+     * Draw a Rectangle in the viewable area for ground and sky - by Max
+     * @param panel The DrawingPanel
+     * @param g The Graphics Object
+     * @param middle The middle of the screen in pixels
+     */
     public static void drawFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
         g.setColor(new Color(80, 158, 204));
         g.fillRect(0, 0, panel.getWidth(), middle);
@@ -44,21 +48,44 @@ public class DrawingUtils {
         g.fillRect(0, middle, panel.getWidth(), middle);
     }
 
+    /**
+     * Draws a floor and cieling that gets darker as it gets further away
+     * Still needs in testing - by Max
+     * @param panel The DrawingPanel
+     * @param g The Graphics Object
+     * @param middle The middle of the screen in pixels
+     */
     public static void moodyFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
         for (int i = 0; i < middle; i++) {
-            double percent = 1 - (double) i / (double) middle;
+            double percent = 1 - (double) Math.pow(i,2) / (double) Math.pow(middle,2);
             g.setColor(new Color((int) (80 * percent), (int) (158 * percent), (int) (204 * percent)));
             g.fillRect(0, i, panel.getWidth(), i);
         }
 
         for (int i = 0; i < middle; i++) {
-            double percent = (double) i / (double) middle;
+            double percent = (double) Math.pow(i,2) / (double) Math.pow(middle,2);
             g.setColor(new Color((int) (45 * percent), (int) (122 * percent), (int) (39 * percent)));
             g.fillRect(0, i + middle, panel.getWidth(), i + middle);
         }
     }
 
-    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, double degreesPerPixel, double viewAngleOffset) {
+    /**
+     * Draw the walls - by Max
+     * @param panel The DrawingPanel
+     * @param g The Graphics Object
+     * @param character The Player
+     * @param walls An array of walls to render
+     * @param frameCount The frame number you are on
+     */
+    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, int frameCount, boolean moved) {
+        final double degreesPerPixel = Consts.FOV/panel.getWidth();
+        final double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
+        int viewBobbing = 0;
+        if (Consts.VIEW_BOBBING_ENABLED) {
+            viewBobbing = (int) (Math.sin((double) frameCount / Consts.VIEW_BOBBING_CYCLE_DIVISOR) * Consts.VIEW_BOBBING_HEIGHT_MULTIPLIER) * (moved ? 1 : 0);
+        }
+        final int midPoint = (panel.getHeight()*3/4)/2 + viewBobbing;
+
         for (int pixel = 0; pixel < panel.getWidth(); pixel++) {
             double viewAngle = degreesPerPixel * pixel;
 
@@ -76,11 +103,15 @@ public class DrawingUtils {
                 Wall closestWall = pointWallDictionary.get(closestIntersect);
 
 
+                // Construct a line that is perpendicular to the player's view
+                // Consts.PLAYER_MAX_VIEW_DISTANCE is an arbitrary number, but
+                // it is the maximum distance that the player can see, so it'll work
                 double characterAngle = character.getAngle();
                 Point characterPoint = character.getPoint();
                 Point shiftedPlayerpos = new Point(characterPoint.getX()+5,characterPoint.getY()+5);
                 Point p1 = MathUtils.pointAlongAngle(characterAngle+90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
                 Point p2 = MathUtils.pointAlongAngle(characterAngle-90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
+
                 if (Consts.DEBUG_RENDERING) {
                     Line playerLineForPerpIntersection = new Line(p1, p2);
                     g.setColor(Color.RED);
@@ -88,35 +119,57 @@ public class DrawingUtils {
                 }
 
 
-                // I have no idea how this works
+                // I have no idea how this equation works, but it does
                 // https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
                 double perpDistance = Math.abs((p2.getX()-p1.getX())*(p1.getY()-closestIntersect.getY())-(p1.getX()-closestIntersect.getX())*(p2.getY()-p1.getY()))/Math.sqrt(Math.pow((p2.getX()-p1.getX()),2)+Math.pow((p2.getY()-p1.getY()),2));
 
+                // The theory behind this is that the height of the wall is proportional to the distance from the player
+                // You just have to use perpDistance instead of distance because otherwise you get a fisheye effect
+                // PerpDistance is the distance from the player to the wall, but it's perpendicular to the player's view instead of emanating from the player point
                 double height = (closestWall.getHeightMultiplier() * Consts.BASE_WALL_HEIGHT) / perpDistance;
 
 
-                int midPoint = (panel.getHeight()*3/4)/2;
 
                 Color wallColor = closestWall.getColor();
 
-                // WALL CORNER SCALE FACTOR CODE
-                double wallLength = closestWall.getP1().distance(closestWall.getP2());
-                double intersectionToP1 = closestWall.getP1().distance(closestIntersect);
+                double ambientOcclusionFactor = getAmbientOcclusionFactor(closestIntersect, closestWall);
 
-                // y = a(x-h)^2+k
-                double scaledParabolaHeight = Consts.WALL_CORNER_PARABOLA_HEIGHT*wallLength;
-                double a = (scaledParabolaHeight/2-scaledParabolaHeight)/Math.pow((wallLength/2),2);
+                // This line is massive, but it's basically a lerp between the wall color and black based on distance and ambient occlusion
+                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE)) * ambientOcclusionFactor;
 
-                double wallCornerScaleFactor = a*Math.pow((intersectionToP1-wallLength/2),2)+scaledParabolaHeight;
-                wallCornerScaleFactor = MathUtils.lerp(0,scaledParabolaHeight,wallCornerScaleFactor/scaledParabolaHeight)/scaledParabolaHeight;
-
-
-                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE)) * wallCornerScaleFactor;
                 Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
                 g.setColor(displayColor);
                 g.drawLine(pixel, (int) ( midPoint+height/2), pixel, (int) ( midPoint-height/2));
             }
 
         }
+    }
+
+
+    /**
+     * Gets the ambient occlusion factor for a wall
+     * @param closestIntersect The closest intersection to the player
+     * @param closestWall The closest wall to the player
+     * @return The ambient occlusion factor, double between 0 and 1
+     */
+    private static double getAmbientOcclusionFactor(Point closestIntersect, Wall closestWall) {
+        // Some surprisingly ok ambient occlusion
+        // Basically defines an upside down parabola with the vertex at the middle of the wall
+        // The parabola has an absurd height, and the ambient occlusion factor is the y value of the parabola at the intersection point
+        // Then the value is lerped between 0 and the height of the parabola
+        // This is then divided by the height of the parabola to get a value between 0 and 1
+        // It works better than I would expect but is not as good as proper ssao or raytracing
+        // - Max
+
+        double wallLength = closestWall.getP1().distance(closestWall.getP2());
+        double intersectionToP1 = closestWall.getP1().distance(closestIntersect);
+
+        // y = a(x-h)^2+k
+        double scaledParabolaHeight = Consts.WALL_CORNER_PARABOLA_HEIGHT*wallLength;
+        double a = (scaledParabolaHeight/2-scaledParabolaHeight)/Math.pow((wallLength/2),2);
+
+        double ambientOcclusionFactor = a*Math.pow((intersectionToP1-wallLength/2),2)+scaledParabolaHeight;
+        ambientOcclusionFactor = MathUtils.lerp(0,scaledParabolaHeight,ambientOcclusionFactor/scaledParabolaHeight)/scaledParabolaHeight;
+        return ambientOcclusionFactor;
     }
 }

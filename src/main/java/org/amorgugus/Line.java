@@ -25,6 +25,12 @@ public class Line {
         this.intercept = calculateIntercept();
     }
 
+    /**
+     * Construct a line from a point, angle, and length
+     * @param p1 The first point of the line
+     * @param angle The angle of the line in degrees where 0 is horizontal right and 90 is vertical
+     * @param length The length of the line
+     */
     public Line(Point p1, double angle, double length) {
         this.p1 = p1;
         this.p2 = MathUtils.pointAlongAngle(angle, length, p1);
@@ -32,6 +38,12 @@ public class Line {
         this.intercept=calculateIntercept();
     }
 
+    /**
+     * Construct a line from a slope, y intercept, and length
+     * @param slope The slope of the line
+     * @param yIntercept The y intercept of the line
+     * @param length The length of the line
+     */
     public Line(double slope, double yIntercept, double length) {
         this.slope = slope;
         this.intercept = yIntercept;
@@ -39,15 +51,27 @@ public class Line {
         this.p2 = new Point(length,(slope*length+yIntercept));
     }
 
+    /**
+     * Get the first point of the line
+     * @return The first point of the line
+     */
     public Point getP1() {
         return p1;
     }
 
+    /**
+     * Get the second point of the line
+     * @return The second point of the line
+     */
     public Point getP2() {
         return p2;
     }
 
 
+    /**
+     * Calculates the y intercept of the current line
+     * @return The y intercept of the current line
+     */
     private double calculateIntercept() {
         // b = y1 -m * x1
 
@@ -156,6 +180,9 @@ public class Line {
         g.drawLine((int) this.p1.getX(), (int) this.p1.getY(), (int) this.p2.getX(), (int) this.p2.getY());
     }
 
+    /**
+     * Pretty print the line
+     */
     @Override
     public String toString() {
         return "(" + this.p1.getX() + ", " + this.p1.getY() + ") <-> ("+this.p2.getX() + ", " + this.p2.getY() + ")";

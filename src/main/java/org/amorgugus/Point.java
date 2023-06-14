@@ -9,17 +9,35 @@ public class Point {
         this.y = y;
 
     }
+
+    /**
+     * Get the x of the point
+     * @return The x of the point
+     */
     public double getX(){
         return this.x;
     }
+
+    /**
+     * Get the y of the point
+     * @return The y of the point
+     */
     public double getY(){
         return this.y;
     }
 
+    /**
+     * Set the x of the point
+     * @param value The new x of the point
+     */
     public void setX(double value) {
         this.x = value;
     }
 
+    /**
+     * Set the y of the point
+     * @param value The new y of the point
+     */
     public void setY(double value) {
         this.y = value;
     }
@@ -43,6 +61,9 @@ public class Point {
         return Math.sqrt(Math.pow(xDiff,2) + Math.pow(yDiff,2));
     }
 
+    /**
+     * Prints the point in a readable format
+     */
     public String toString() {
         return "(x: " + this.x + ", y: " + this.y + ")";
     }
