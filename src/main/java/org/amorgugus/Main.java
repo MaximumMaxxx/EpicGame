@@ -100,18 +100,22 @@ public class Main {
             g.setColor(Color.green);
 
 
+            int forwardDist = 0;
+            int sideDist = 0;
             if (input.keyDown('w')) {
-                character.move(1,0, walls);
+                forwardDist += 1;
+
             }
             if (input.keyDown('s')) {
-                character.move(-1,0, walls);
+                forwardDist -=1;
             }
             if (input.keyDown('a')) {
-                character.move(0,-1, walls);
+                sideDist -= 1;
             }
             if (input.keyDown('d')){
-                character.move(0,1, walls);
+                sideDist += 1;
             }
+            character.move(forwardDist,sideDist, walls);
 
 
 
