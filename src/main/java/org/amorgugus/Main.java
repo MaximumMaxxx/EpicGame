@@ -23,7 +23,7 @@ public class Main {
 
         boolean running = true;
 
-        Player character = new Player((double) panel.getWidth() / 2 - 5, (double) panel.getHeight() / 2 - 5, 0, g);
+        Player character = new Player(625, 85, -90, g);
 
         Wall[] walls = new Wall[] {
                 new Wall(new Point(0,1), new Point(0,720), 1, Color.orange),
@@ -36,7 +36,7 @@ public class Main {
                 new Wall(new Point(200,100), new Point(200,150), 1, Color.orange),
                 new Wall(new Point(200,100), new Point(500,101), 1, Color.orange),
                 new Wall(new Point(200,150), new Point(200,100), 1, Color.orange),
-//                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
+                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
         };
 
 
@@ -87,13 +87,10 @@ public class Main {
                 g.setColor(Color.RED);
             }
 
-
-
-
-
             String[] hudVars = new String[] {
                     "Player Position " + character.getPoint(),
                     "Wall height: " + Consts.BASE_WALL_HEIGHT,
+                    "Character Angle: " + character.getAngle(),
             };
 
             hud.render(hudVars, character.getHealth());
@@ -111,6 +108,11 @@ public class Main {
             }
             if (input.keyDown('d')){
                 character.move(0,1, walls);
+            }
+            if (input.keyDown('q')) {
+                // Exit
+                running = false;
+                System.exit(0);
             }
 
 

@@ -39,16 +39,30 @@ public class DrawingUtils {
 
     public static void drawFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
         g.setColor(new Color(80, 158, 204));
-        g.fillRect(0,0, panel.getWidth(), middle);
+        g.fillRect(0, 0, panel.getWidth(), middle);
         g.setColor(new Color(45, 122, 39));
-        g.fillRect(0, middle, panel.getWidth(), panel.getHeight());
+        g.fillRect(0, middle, panel.getWidth(), middle);
+    }
+
+    public static void moodyFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
+        for (int i = 0; i < middle; i++) {
+            double percent = 1 - (double) i / (double) middle;
+            g.setColor(new Color((int) (80 * percent), (int) (158 * percent), (int) (204 * percent)));
+            g.fillRect(0, i, panel.getWidth(), i);
+        }
+
+        for (int i = 0; i < middle; i++) {
+            double percent = (double) i / (double) middle;
+            g.setColor(new Color((int) (45 * percent), (int) (122 * percent), (int) (39 * percent)));
+            g.fillRect(0, i + middle, panel.getWidth(), i + middle);
+        }
     }
 
     public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, double degreesPerPixel, double viewAngleOffset) {
         for (int pixel = 0; pixel < panel.getWidth(); pixel++) {
             double viewAngle = degreesPerPixel * pixel;
 
-            Line playerLine = character.getLine(viewAngle+ viewAngleOffset);
+            Line playerLine = character.getLine(viewAngle + viewAngleOffset);
 
             List<Point> intersections = new ArrayList<>();
             Dictionary<Point, Wall> pointWallDictionary = new Hashtable<>();
@@ -89,16 +103,15 @@ public class DrawingUtils {
                 double wallLength = closestWall.getP1().distance(closestWall.getP2());
                 double intersectionToP1 = closestWall.getP1().distance(closestIntersect);
 
-                double a = (-Consts.WALL_CORNER_PARABOLA_HEIGHT)/Math.pow((wallLength/2),2);
+                // y = a(x-h)^2+k
+                double scaledParabolaHeight = Consts.WALL_CORNER_PARABOLA_HEIGHT*wallLength;
+                double a = (scaledParabolaHeight/2-scaledParabolaHeight)/Math.pow((wallLength/2),2);
 
-                double wallCornerScaleFactor = a*Math.pow((10-intersectionToP1-wallLength/2),2)+Consts.WALL_CORNER_PARABOLA_HEIGHT;
-                wallCornerScaleFactor = MathUtils.lerp(0,Consts.WALL_CORNER_PARABOLA_HEIGHT,wallCornerScaleFactor/Consts.WALL_CORNER_PARABOLA_HEIGHT)/Consts.WALL_CORNER_PARABOLA_HEIGHT;
-//                System.out.println(wallCornerScaleFactor);
+                double wallCornerScaleFactor = a*Math.pow((intersectionToP1-wallLength/2),2)+scaledParabolaHeight;
+                wallCornerScaleFactor = MathUtils.lerp(0,scaledParabolaHeight,wallCornerScaleFactor/scaledParabolaHeight)/scaledParabolaHeight;
 
 
-
-
-                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE));
+                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE)) * wallCornerScaleFactor;
                 Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
                 g.setColor(displayColor);
                 g.drawLine(pixel, (int) ( midPoint+height/2), pixel, (int) ( midPoint-height/2));
