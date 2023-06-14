@@ -128,6 +128,20 @@ public class Line {
      * @return true if the bounds contain the point
      */
     public boolean isPointWithinBounds(Point p) {
+        // Parallel to the x axis
+        if (Math.abs(this.slope) < 0.0001) {
+            return (
+                    MathUtils.isBetween(p.getX(), this.p1.getX(), this.p2.getX())
+            );
+        }
+
+        // Parallel to the y axis
+        if (Math.abs(this.slope) > Integer.MAX_VALUE) {
+            return (
+                    MathUtils.isBetween(p.getY(), this.p1.getY(), this.p2.getY())
+            );
+        }
+
         return (
                 MathUtils.isBetween(p.getX(), this.p1.getX(), this.p2.getX()) &&
                 MathUtils.isBetween(p.getY(), this.p1.getY(), this.p2.getY())
