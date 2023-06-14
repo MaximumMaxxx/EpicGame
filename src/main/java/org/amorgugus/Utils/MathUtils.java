@@ -4,7 +4,6 @@ import org.amorgugus.Line;
 import org.amorgugus.Point;
 import org.amorgugus.Wall;
 
-import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.List;
 
@@ -31,10 +30,10 @@ public class MathUtils {
     /**
      *
      * Returns the point that's some distance and angle from a location
-     * @param angle
-     * @param length
-     * @param location
-     * @return
+     * @param angle The angle in degrees
+     * @param length The distance from the location
+     * @param location The location to start from
+     * @return The point that's some distance and angle from a location
      */
     public static Point pointAlongAngle(double angle, double length, Point location) {
         // Trig crap
@@ -77,13 +76,13 @@ public class MathUtils {
         return (bound2 - bound1) * percentage;
     }
 
-    public static double clamp(double a, double b, double c) {
-        double[] arr = new double[] {
-                a,b,c
-        };
-        return  Arrays.stream(arr).sorted().toArray()[1];
-    }
-
+    /**
+     * Gets a list of all the intersections between a line and a list of walls and puts them in a dictionary with the wall they intersect
+     * @param walls The walls to check
+     * @param playerLine The view line to check
+     * @param intersections The list to add the intersections to
+     * @param pointWallDictionary The dictionary to add the intersections to
+     */
     public static void getIntersections(Wall[] walls, Line playerLine, List<Point> intersections, Dictionary<Point, Wall> pointWallDictionary) {
         for (Wall wall :
                 walls) {

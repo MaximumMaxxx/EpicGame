@@ -67,8 +67,10 @@ public class Player {
         // Max helped here
         // Collision detection added by Max
         Line forwardLine = this.getLine(this.angle, forwardDist*10);
-        this.graphics.setColor(Color.RED);
-        forwardLine.draw(this.graphics);
+        if (Consts.DEBUG_RENDERING) {
+            this.graphics.setColor(Color.RED);
+            forwardLine.draw(this.graphics);
+        }
         Point intersect = MathUtils.doesIntersectWall(walls, forwardLine);
         if (intersect != null) {
             forwardDist=0;
@@ -76,7 +78,10 @@ public class Player {
         }
 
         Line sideLine = this.getLine(this.angle+90, sideDist*10);
-        sideLine.draw(this.graphics);
+        if (Consts.DEBUG_RENDERING) {
+            this.graphics.setColor(Color.RED);
+            sideLine.draw(this.graphics);
+        }
         intersect = MathUtils.doesIntersectWall(walls, sideLine);
         if (intersect != null) {
             sideDist = 0;

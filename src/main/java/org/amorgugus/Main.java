@@ -16,6 +16,7 @@ public class Main {
         BufferedImage offscreen = new BufferedImage(panel.getWidth(), panel.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g = offscreen.getGraphics();
         Robot robot = new Robot();
+        int frameCount = 0;
 
 
         // Init the initial wall height based on the panel size
@@ -23,7 +24,7 @@ public class Main {
 
         boolean running = true;
 
-        Player character = new Player((double) panel.getWidth() / 2 - 5, (double) panel.getHeight() / 2 - 5, 0, g);
+        Player character = new Player(625, 85, -90, g);
 
         Wall[] walls = new Wall[] {
                 new Wall(new Point(0,1), new Point(0,720), 1, Color.orange),
@@ -36,12 +37,13 @@ public class Main {
                 new Wall(new Point(200,100), new Point(200,150), 1, Color.orange),
                 new Wall(new Point(200,100), new Point(500,101), 1, Color.orange),
                 new Wall(new Point(200,150), new Point(200,100), 1, Color.orange),
-//                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
+                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
         };
 
 
         int mousex;
         int mousey;
+        boolean moved = false;
 
 
         HUD hud = new HUD(g, panel);
@@ -70,9 +72,10 @@ public class Main {
 
             int middle = hud.getPlayerViewAbleArea()/2;
 
+//            DrawingUtils.moodyFloorAndCieling(panel, g, middle);
             DrawingUtils.drawFloorAndCieling(panel, g, middle);
 
-            DrawingUtils.drawWalls(panel, g, character, walls, degreesPerPixel, viewAngleOffset);
+            DrawingUtils.drawWalls(panel, g, character, walls, frameCount, moved);
             if (Consts.DEBUG_RENDERING) {
                 character.render();
                 for (Wall wall :
@@ -80,6 +83,8 @@ public class Main {
                     wall.draw(g);
                 }
 
+                double degreesPerPixel = Consts.FOV/panel.getWidth();
+                double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
                 Line viewConeLine = character.getLine(viewAngleOffset);
                 viewConeLine.draw(g);
                 viewConeLine = character.getLine(degreesPerPixel * panel.getWidth() + viewAngleOffset);
@@ -94,6 +99,7 @@ public class Main {
             String[] hudVars = new String[] {
                     "Player Position " + character.getPoint(),
                     "Wall height: " + Consts.BASE_WALL_HEIGHT,
+                    "Character Angle: " + character.getAngle(),
             };
 
             hud.render(hudVars, character.getHealth());
@@ -102,17 +108,31 @@ public class Main {
 
             int forwardDist = 0;
             int sideDist = 0;
+            moved = false;
             if (input.keyDown('w')) {
+                character.move(1,0, walls);
+                moved = true;
                 forwardDist += 1;
 
             }
             if (input.keyDown('s')) {
+                character.move(-1,0, walls);
+                moved = true;
                 forwardDist -=1;
             }
             if (input.keyDown('a')) {
+                character.move(0,-1, walls);
+                moved = true;
                 sideDist -= 1;
             }
             if (input.keyDown('d')){
+                character.move(0,1, walls);
+                moved = true;
+            }
+            if (input.keyDown('q')) {
+                // Exit
+                running = false;
+                System.exit(0);
                 sideDist += 1;
             }
             character.move(forwardDist,sideDist, walls);
