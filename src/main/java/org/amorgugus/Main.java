@@ -20,7 +20,7 @@ public class Main {
 
 
         // Init the initial wall height based on the panel size
-        Consts.BASE_WALL_HEIGHT = 20 * panel.getHeight();
+//        Consts.BASE_WALL_HEIGHT = 20 * panel.getHeight();
 
         boolean running = true;
 
@@ -65,9 +65,6 @@ public class Main {
             robot.mouseMove(zeroPos, 1000);
             //remember to move
 
-            double degreesPerPixel = Consts.FOV/panel.getWidth();
-            double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
-
             g.setColor(Color.RED);
 
             int middle = hud.getPlayerViewAbleArea()/2;
@@ -110,30 +107,25 @@ public class Main {
             int sideDist = 0;
             moved = false;
             if (input.keyDown('w')) {
-                character.move(1,0, walls);
                 moved = true;
                 forwardDist += 1;
-
             }
             if (input.keyDown('s')) {
-                character.move(-1,0, walls);
                 moved = true;
                 forwardDist -=1;
             }
             if (input.keyDown('a')) {
-                character.move(0,-1, walls);
                 moved = true;
                 sideDist -= 1;
             }
             if (input.keyDown('d')){
-                character.move(0,1, walls);
+                sideDist += 1;
                 moved = true;
             }
             if (input.keyDown('q')) {
                 // Exit
                 running = false;
                 System.exit(0);
-                sideDist += 1;
             }
             character.move(forwardDist,sideDist, walls);
 

@@ -10,6 +10,6 @@ public class Consts {
     public static final int WALL_CORNER_PARABOLA_HEIGHT = Integer.MAX_VALUE;
 
     public static final double VIEW_BOBBING_CYCLE_DIVISOR = 6;
-    public static final double VIEW_BOBBING_HEIGHT_MULTIPLIER = 2;
+    public static final double VIEW_BOBBING_HEIGHT_MULTIPLIER = 20;
     public static final boolean VIEW_BOBBING_ENABLED = true;
 }

@@ -82,7 +82,9 @@ public class DrawingUtils {
         final double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
         int viewBobbing = 0;
         if (Consts.VIEW_BOBBING_ENABLED) {
-            viewBobbing = (int) (Math.sin((double) frameCount / Consts.VIEW_BOBBING_CYCLE_DIVISOR) * Consts.VIEW_BOBBING_HEIGHT_MULTIPLIER) * (moved ? 1 : 0);
+            if (moved) {
+                viewBobbing = (int) (Math.sin((double) frameCount / Consts.VIEW_BOBBING_CYCLE_DIVISOR) * Consts.VIEW_BOBBING_HEIGHT_MULTIPLIER);
+            }
         }
         final int midPoint = (panel.getHeight()*3/4)/2 + viewBobbing;
 
