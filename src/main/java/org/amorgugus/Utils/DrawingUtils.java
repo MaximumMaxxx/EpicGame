@@ -41,11 +41,11 @@ public class DrawingUtils {
      * @param g The Graphics Object
      * @param middle The middle of the screen in pixels
      */
-    public static void drawFloorAndCieling(DrawingPanel panel, Graphics g, int middle) {
+    public static void drawFloorAndCieling(DrawingPanel panel, Graphics g, int middle, int viewableArea) {
         g.setColor(new Color(80, 158, 204));
         g.fillRect(0, 0, panel.getWidth(), middle);
         g.setColor(new Color(45, 122, 39));
-        g.fillRect(0, middle, panel.getWidth(), middle);
+        g.fillRect(0, middle, panel.getWidth(), viewableArea-middle);
     }
 
     /**
@@ -75,18 +75,11 @@ public class DrawingUtils {
      * @param g The Graphics Object
      * @param character The Player
      * @param walls An array of walls to render
-     * @param frameCount The frame number you are on
+     * @param midPoint The middle of the screen to draw from
      */
-    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, int frameCount, boolean moved) {
+    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, double midPoint) {
         final double degreesPerPixel = Consts.FOV/panel.getWidth();
         final double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
-        int viewBobbing = 0;
-        if (Consts.VIEW_BOBBING_ENABLED) {
-            if (moved) {
-                viewBobbing = (int) (Math.sin((double) frameCount / Consts.VIEW_BOBBING_CYCLE_DIVISOR) * Consts.VIEW_BOBBING_HEIGHT_MULTIPLIER);
-            }
-        }
-        final int midPoint = (panel.getHeight()*3/4)/2 + viewBobbing;
 
         for (int pixel = 0; pixel < panel.getWidth(); pixel++) {
             double viewAngle = degreesPerPixel * pixel;
@@ -168,7 +161,8 @@ public class DrawingUtils {
 
         // y = a(x-h)^2+k
         double scaledParabolaHeight = Consts.WALL_CORNER_PARABOLA_HEIGHT*wallLength;
-        double a = (scaledParabolaHeight/2-scaledParabolaHeight)/Math.pow((wallLength/2),2);
+//        double a = (Consts.WALL_CORNER_PARABOLA_HEIGHT/2-scaledParabolaHeight)/Math.pow((wallLength/2),2);
+        double a = -scaledParabolaHeight / Math.pow(wallLength, 2); // GPT-4 gave me this equation, it's not strictly better but I like the rendered look more
 
         double ambientOcclusionFactor = a*Math.pow((intersectionToP1-wallLength/2),2)+scaledParabolaHeight;
         ambientOcclusionFactor = MathUtils.lerp(0,scaledParabolaHeight,ambientOcclusionFactor/scaledParabolaHeight)/scaledParabolaHeight;

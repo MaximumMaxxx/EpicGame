@@ -59,7 +59,7 @@ public class Player {
 
 
     public void lookAt(Point point){
-    this.angle = MathUtils.angleToPoint(this.x, this.y, point.getX(), point.getY());
+        this.angle = MathUtils.angleToPoint(this.x, this.y, point.getX(), point.getY());
     }
 
     public void move(int forwardDist, int sideDist, Wall[] walls) {

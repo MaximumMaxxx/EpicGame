@@ -1,5 +1,6 @@
 package org.amorgugus.Utils;
 
+import org.amorgugus.Circle;
 import org.amorgugus.Line;
 import org.amorgugus.Point;
 import org.amorgugus.Wall;
@@ -108,5 +109,18 @@ public class MathUtils {
             }
         }
         return null;
+    }
+
+    public static Point[] pointsOfCircleIntersect(Line line, Circle circle) {
+
+
+
+        double A = (1+Math.pow(line.calculateSlope(),2));
+        double B = (2*line.calculateSlope()*line.getIntercept - 2 * (circle.getCenter().getX()))
+        return new Point[] {};
+    }
+
+    public static double[] quadraticFormulaSolver() {
+        return new double[] {};
     }
 }
