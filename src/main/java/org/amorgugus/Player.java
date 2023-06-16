@@ -62,7 +62,7 @@ public class Player {
         this.angle = MathUtils.angleToPoint(this.x, this.y, point.getX(), point.getY());
     }
 
-    public void move(int forwardDist, int sideDist, Wall[] walls) {
+    public void move(double forwardDist, double sideDist, Drawable[] walls) {
 
         // Max helped here
         // Collision detection added by Max

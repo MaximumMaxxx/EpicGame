@@ -1,9 +1,6 @@
 package org.amorgugus.Utils;
 
-import org.amorgugus.Circle;
-import org.amorgugus.Line;
-import org.amorgugus.Point;
-import org.amorgugus.Wall;
+import org.amorgugus.*;
 
 import java.util.Dictionary;
 import java.util.List;
@@ -84,11 +81,11 @@ public class MathUtils {
      * @param intersections The list to add the intersections to
      * @param pointWallDictionary The dictionary to add the intersections to
      */
-    public static void getIntersections(Wall[] walls, Line playerLine, List<Point> intersections, Dictionary<Point, Wall> pointWallDictionary) {
-        for (Wall wall :
+    public static void getIntersections(Drawable[] walls, Line playerLine, List<Point> intersections, Dictionary<Point, Drawable> pointWallDictionary) {
+        for (Drawable wall :
                 walls) {
-            if (playerLine.doesIntersect(wall)) {
-                Point intersect = playerLine.getIntersect(wall);
+            if (wall.doesIntersect(playerLine)) {
+                Point intersect = wall.getIntersect(playerLine);
                 intersections.add(intersect);
                 pointWallDictionary.put(intersect, wall);
             }
@@ -101,26 +98,56 @@ public class MathUtils {
      * @param l The line to check
      * @return The point of intersection or null if there is none
      */
-    public static Point doesIntersectWall(Wall[] walls, Line l) {
-        for (Wall wall :
+    public static Point doesIntersectWall(Drawable[] walls, Line l) {
+        for (Drawable wall :
                 walls) {
-            if (l.doesIntersect(wall)) {
-                return l.getIntersect(wall);
+            if (wall.doesIntersect(l)){
+                return wall.getIntersect(l);
             }
         }
         return null;
     }
 
     public static Point[] pointsOfCircleIntersect(Line line, Circle circle) {
-
-
-
         double A = (1+Math.pow(line.calculateSlope(),2));
-        double B = (2*line.calculateSlope()*line.getIntercept - 2 * (circle.getCenter().getX()))
-        return new Point[] {};
+        double B = (2*line.calculateSlope()*line.calculateIntercept() - 2 * (circle.getCenter().getY()* line.calculateSlope()));
+        double C = (Math.pow(line.calculateIntercept()-circle.getCenter().getY(),2)-Math.pow(circle.getRadius(),2)+Math.pow(circle.getCenter().getY(),2));
+
+        double[] roots = findRealRoots(A,B,C);
+
+        if (roots.length == 0) {
+            return new Point[] {};
+        } if (roots.length == 1) {
+            return new Point[] {
+                new Point(roots[0], line.calculateSlope()*roots[0]+line.calculateIntercept())
+            };
+        } if (roots.length == 2) {
+            return new Point[] {
+                new Point(roots[0], line.calculateSlope()*roots[0]+line.calculateIntercept()),
+                new Point(roots[1], line.calculateSlope()*roots[1]+line.calculateIntercept())
+            };
+        }
+        // If we get here something went very wrong
+        return null;
     }
 
-    public static double[] quadraticFormulaSolver() {
-        return new double[] {};
+    public static double[] findRealRoots(double a, double b, double c) {
+        // Chatgpt ahh code
+        // I could have written this myself but that would be dumb - Max
+        double discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0) {
+            // No real roots
+            return new double[0];
+        } else if (discriminant == 0) {
+            // One real root
+            double root = -b / (2 * a);
+            return new double[] { root };
+        } else {
+            // Two real roots
+            double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+            double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+            return new double[] { root1, root2 };
+        }
     }
 }

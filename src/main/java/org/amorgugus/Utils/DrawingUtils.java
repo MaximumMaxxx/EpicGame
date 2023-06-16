@@ -77,7 +77,7 @@ public class DrawingUtils {
      * @param walls An array of walls to render
      * @param midPoint The middle of the screen to draw from
      */
-    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Wall[] walls, double midPoint) {
+    public static void drawWalls(DrawingPanel panel, Graphics g, Player character, Drawable[] walls, double midPoint) {
         final double degreesPerPixel = Consts.FOV/panel.getWidth();
         final double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
 
@@ -87,7 +87,7 @@ public class DrawingUtils {
             Line playerLine = character.getLine(viewAngle + viewAngleOffset);
 
             List<Point> intersections = new ArrayList<>();
-            Dictionary<Point, Wall> pointWallDictionary = new Hashtable<>();
+            Dictionary<Point, Drawable> pointWallDictionary = new Hashtable<>();
             MathUtils.getIntersections(walls, playerLine, intersections, pointWallDictionary);
 
             // We only need to draw a wall if there is an intersection
@@ -95,7 +95,7 @@ public class DrawingUtils {
                 intersections.sort((o1, o2) -> (int) (o1.distance(character.getPoint()) - o2.distance(character.getPoint())));
 
                 Point closestIntersect = intersections.get(0);
-                Wall closestWall = pointWallDictionary.get(closestIntersect);
+                Drawable closestWall = pointWallDictionary.get(closestIntersect);
 
 
                 // Construct a line that is perpendicular to the player's view
@@ -127,10 +127,15 @@ public class DrawingUtils {
 
                 Color wallColor = closestWall.getColor();
 
-                double ambientOcclusionFactor = getAmbientOcclusionFactor(closestIntersect, closestWall);
+                double ambientOcculsionFactor;
+                if (closestWall.getClass() == Wall.class) {
+                    ambientOcculsionFactor = getAmbientOcclusionFactor(closestIntersect, (Wall) closestWall);
+                } else {
+                    ambientOcculsionFactor = 1;
+                }
 
                 // This line is massive, but it's basically a lerp between the wall color and black based on distance and ambient occlusion
-                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE)) * ambientOcclusionFactor;
+                double colorScaleFactor = (1-( MathUtils.lerp(0, Consts.PLAYER_MAX_VIEW_DISTANCE, perpDistance/Consts.PLAYER_MAX_VIEW_DISTANCE)/Consts.PLAYER_MAX_VIEW_DISTANCE)) * ambientOcculsionFactor;
 
                 Color displayColor = new Color((int) (wallColor.getRed() * colorScaleFactor), (int) (wallColor.getGreen() * colorScaleFactor), (int) (wallColor.getBlue()*colorScaleFactor));
                 g.setColor(displayColor);

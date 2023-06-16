@@ -72,7 +72,7 @@ public class Line {
      * Calculates the y intercept of the current line
      * @return The y intercept of the current line
      */
-    private double calculateIntercept() {
+    public double calculateIntercept() {
         // b = y1 -m * x1
 
         return this.p1.getY() - this.slope * this.p1.getX();

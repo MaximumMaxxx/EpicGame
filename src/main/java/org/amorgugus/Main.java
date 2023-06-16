@@ -76,7 +76,7 @@ public class Main {
             drawWorld(panel, g, frameCount, character, walls, moved);
             if (Consts.DEBUG_RENDERING) {
                 character.render();
-                for (Wall wall :
+                for (Drawable wall :
                         walls) {
                     wall.draw(g);
                 }
@@ -145,7 +145,7 @@ public class Main {
                 }
             }
 
-            character.move(forwardDist,sideDist, walls);
+        character.move(forwardDist * Consts.PLAYER_SPEED_MULTIPLIER,sideDist * Consts.PLAYER_SPEED_MULTIPLIER, walls);
 
 
 
@@ -160,7 +160,7 @@ public class Main {
 
     }
 
-    private static void drawWorld(DrawingPanel panel, Graphics g, int frameCount, Player character, Wall[] walls, boolean moved) {
+    private static void drawWorld(DrawingPanel panel, Graphics g, int frameCount, Player character, Drawable[] walls, boolean moved) {
         int viewableArea = (panel.getHeight() * 3/4);
         int viewBobbing = 0;
         if (Consts.VIEW_BOBBING_ENABLED) {
@@ -171,6 +171,7 @@ public class Main {
         final int midPoint = viewableArea/2 + viewBobbing;
 
 
+//        DrawingUtils.moodyFloorAndCieling(panel,g,midPoint);
         DrawingUtils.drawFloorAndCieling(panel, g, midPoint, viewableArea);
         DrawingUtils.drawWalls(panel, g, character, walls, midPoint);
     }

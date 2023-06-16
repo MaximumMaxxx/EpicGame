@@ -4,7 +4,7 @@ package org.amorgugus;
 
 import java.awt.*;
 
-public class Wall extends Line {
+public class Wall extends Line implements Drawable {
     private final double height;
     private final Color color;
     public Wall(Point p1, Point p2, double height, Color color) {
