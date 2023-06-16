@@ -30,20 +30,62 @@ public class Main {
 
         Player character = new Player(625, 85, -90, g);
 
-        Wall[] walls = new Wall[] {
-                new Wall(new Point(0,1), new Point(0,720), 1, Color.orange),
-                new Wall(new Point(0,0), new Point(1280,0), 1, Color.orange),
-                new Wall(new Point(0,720), new Point(1280,720), 1, Color.orange),
-                new Wall(new Point(1280,1), new Point(1280,720), 1, Color.orange),
+        Drawable[] walls = new Drawable[]{
+                //WALL POINTS ENTERED BY MATT (much to the detrement of my sanity)
+                new Wall(new Point(0, 0), new Point(0, 720), 1, Color.red),
+                new Wall(new Point(0, 0), new Point(1280, 0), 1, Color.red),
+                new Wall(new Point(0, 720), new Point(1280, 720), 1, Color.red),
+                new Wall(new Point(1280, 0), new Point(1280, 720), 1, Color.red),
+//exterior 4 walls ^
 
+                new Wall(new Point(0, 100), new Point(100, 0), 1, Color.orange),
+                new Wall(new Point(200, 100), new Point(200, 150), 1, Color.orange),
+                new Wall(new Point(200, 100), new Point(500, 100), 1, Color.orange),
+                new Wall(new Point(200, 150), new Point(200, 100), 1, Color.orange),
+                new Wall(new Point(200, 150), new Point(900, 150), 1, Color.orange),
+                new Wall(new Point(300, 150), new Point(350, 120), 1, Color.orange),
+                new Wall(new Point(400,130), new Point(450,100), 1, Color.orange),
+                new Wall(new Point(550,100), new Point(600,100), 1, Color.orange),
+                new Wall(new Point(300,150), new Point(350,120), 1, Color.orange),
+                new Wall(new Point(550,100), new Point(550,50), 1, Color.orange),
+                new Wall(new Point(550,50), new Point(650,50), 1, Color.orange),
+                new Wall(new Point(650,150), new Point(650,50), 1, Color.orange),
 
-                new Wall(new Point(0,100), new Point(100,0), 1, Color.orange),
-                new Wall(new Point(200,100), new Point(200,150), 1, Color.orange),
-                new Wall(new Point(200,100), new Point(500,101), 1, Color.orange),
-                new Wall(new Point(200,150), new Point(200,100), 1, Color.orange),
-                new Wall(new Point(42,90), new Point(66,58), 1, Color.orange),
+                new Wall(new Point(750,50), new Point(700,100), 1, Color.orange),
+                new Wall(new Point(750,50), new Point(800,50), 1, Color.orange),
+                new Wall(new Point(850,100), new Point(800,50), 1, Color.orange),
+                new Wall(new Point(700,100), new Point(850,100), 1, Color.orange),
+                //trapezoid
+                new Wall(new Point(900,0), new Point(900,150), 1, Color.orange),
+                new Wall(new Point(1000,50), new Point(1000,0), 1, Color.orange),
+                new Wall(new Point(1000,50), new Point(1250,50), 1, Color.orange),
+                new Wall(new Point(1250,50), new Point(1250,50), 1, Color.orange),
+                //the bits in the x-1k-2k range of the top corner of the map thingy ^
+                new Wall(new Point(0,250), new Point(100,250), 1, Color.orange),
+                new Wall(new Point(50,300), new Point(50,300), 1, Color.orange),
+                //courtyard \/
+                new Wall(new Point(150,250), new Point(200,250), 1, Color.orange),
+                new Wall(new Point(100,300), new Point(200,300), 1, Color.orange),
+                new Wall(new Point(200,200), new Point(200,250), 1, Color.orange),
+                new Wall(new Point(200,200), new Point(620,200), 1, Color.orange),
+                new Wall(new Point(400,200), new Point(400,300), 1, Color.orange),
+                new Wall(new Point(200,300), new Point(200,350), 1, Color.orange),
+                new Wall(new Point(200,350), new Point(400,350), 1, Color.orange),
+                new Wall(new Point(400,300), new Point(450,300), 1, Color.orange),
+                //internal peice of the courtyard
+                new Wall(new Point(250,250), new Point(250,300), 1, Color.orange),
+                new Wall(new Point(250,250), new Point(350,250), 1, Color.orange),
+                new Wall(new Point(250,300), new Point(350,300), 1, Color.orange),
+                new Wall(new Point(350,250), new Point(350,300), 1, Color.orange),
+                //circle
+                new Circle(new Point(100,100), 40, Color.blue),
+                //east of courtyard below
+                new Wall(new Point(500,300), new Point(400,300), 1, Color.orange),
+                new Wall(new Point(500,300), new Point(650,300), 1, Color.orange),
+                new Wall(new Point(620,200), new Point(620,300), 1, Color.orange),
+                //south of courtyard below
+                new Wall(new Point(200,350), new Point(200,500), 1, Color.orange),
         };
-
 
         int mousex;
         int mousey;
@@ -128,7 +170,7 @@ public class Main {
                 sideDist += 1;
                 moved = true;
             }
-            if (input.keyDown('q')) {
+            if (input.keyDown('`')) {
                 // Exit
                 running = false;
                 System.exit(0);
