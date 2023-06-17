@@ -15,6 +15,9 @@ if you're on windows, you can run the gradle wrapper with
 gradlew.bat run
 ```
 
+It's not a great experience but there's a replit too
+https://replit.com/@cse142-2022-23/Other-Projects-MaxwellWindland
+
 **IMPORANT:** When you launch the game you'll have 5 seconds to maximize the window. If you don't do this, your mouse will snap to a random part of the screen and you'll spin very fast. If you end up in this state you can press \` to close the game or just alt+f4.
 
 ## Controls
