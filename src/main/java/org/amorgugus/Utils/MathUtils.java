@@ -109,6 +109,8 @@ public class MathUtils {
     }
 
     public static Point[] pointsOfCircleIntersect(Line line, Circle circle) {
+        // God bless this man https://www.desmos.com/calculator/lxaq38n0et
+        // Actually pretty much saved this endevour
         double b = line.getP1().getY() - line.calculateSlope()*(line.getP1().getX()-circle.getCenter().getX()) - circle.getCenter().getY();
 
 
@@ -134,6 +136,13 @@ public class MathUtils {
         return null;
     }
 
+    /**
+     * Finds the real roots of a quadratic equation
+     * @param a The a value
+     * @param b The b value
+     * @param c The c value
+     * @return An array of the real roots, 0-2 elements
+     */
     public static double[] findRealRoots(double a, double b, double c) {
         // Chatgpt ahh code
         // I could have written this myself but that would be dumb - Max
