@@ -109,9 +109,14 @@ public class MathUtils {
     }
 
     public static Point[] pointsOfCircleIntersect(Line line, Circle circle) {
-        double A = (1+Math.pow(line.calculateSlope(),2));
-        double B = (2*line.calculateSlope()*line.calculateIntercept() - 2 * (circle.getCenter().getY()* line.calculateSlope()));
-        double C = (Math.pow(line.calculateIntercept()-circle.getCenter().getY(),2)-Math.pow(circle.getRadius(),2)+Math.pow(circle.getCenter().getY(),2));
+        // God bless this man https://www.desmos.com/calculator/lxaq38n0et
+        // Actually pretty much saved this endevour
+        double b = line.getP1().getY() - line.calculateSlope()*(line.getP1().getX()-circle.getCenter().getX()) - circle.getCenter().getY();
+
+
+        double A = Math.pow(line.calculateSlope(),2)+1;
+        double B = 2 * line.calculateSlope() * b;
+        double C = (Math.pow(b,2)-Math.pow(circle.getRadius(),2));
 
         double[] roots = findRealRoots(A,B,C);
 
@@ -119,18 +124,25 @@ public class MathUtils {
             return new Point[] {};
         } if (roots.length == 1) {
             return new Point[] {
-                new Point(roots[0], line.calculateSlope()*roots[0]+line.calculateIntercept())
+                new Point(roots[0] + circle.getCenter().getX(), line.calculateSlope()*roots[0]+line.calculateIntercept() + circle.getCenter().getY())
             };
         } if (roots.length == 2) {
             return new Point[] {
-                new Point(roots[0], line.calculateSlope()*roots[0]+line.calculateIntercept()),
-                new Point(roots[1], line.calculateSlope()*roots[1]+line.calculateIntercept())
+                new Point(roots[0] + circle.getCenter().getX(), line.calculateSlope()*roots[0]+ b + circle.getCenter().getY()),
+                new Point(roots[1] + circle.getCenter().getX(), line.calculateSlope()*roots[1]+ b + circle.getCenter().getY())
             };
         }
         // If we get here something went very wrong
         return null;
     }
 
+    /**
+     * Finds the real roots of a quadratic equation
+     * @param a The a value
+     * @param b The b value
+     * @param c The c value
+     * @return An array of the real roots, 0-2 elements
+     */
     public static double[] findRealRoots(double a, double b, double c) {
         // Chatgpt ahh code
         // I could have written this myself but that would be dumb - Max

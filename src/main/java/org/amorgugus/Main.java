@@ -28,7 +28,8 @@ public class Main {
 
         boolean running = true;
 
-        Player character = new Player(625, 85, -90, g);
+//        Player character = new Player(625, 85, -90, g);
+        Player character = new Player(100, 180, -90, g);
 
         Drawable[] walls = new Drawable[]{
                 //WALL POINTS ENTERED BY MATT (much to the detrement of my sanity)
@@ -107,8 +108,10 @@ public class Main {
             mousex = input.getMouseLoc().x;
             double angle = character.getAngle();
             int zeroPos = panel.getWidth()/2;
-            character.setAngle(angle + (mousex - zeroPos+1) * 0.5);
-            robot.mouseMove(zeroPos, 1000);
+            if (!Consts.ONE_FRAME_RENDERING) {
+                character.setAngle(angle + (mousex - zeroPos+1) * 0.5);
+                robot.mouseMove(zeroPos, 1000);
+            }
             //remember to move
 
             g.setColor(Color.RED);
@@ -122,7 +125,6 @@ public class Main {
                         walls) {
                     wall.draw(g);
                 }
-
                 double degreesPerPixel = Consts.FOV/panel.getWidth();
                 double viewAngleOffset =  character.getAngle() - Consts.FOV/2;
                 Line viewConeLine = character.getLine(viewAngleOffset);
@@ -131,10 +133,6 @@ public class Main {
                 viewConeLine.draw(g);
                 g.setColor(Color.RED);
             }
-
-
-
-
 
             String[] hudVars = new String[] {
                     "Player Position " + character.getPoint(),
@@ -151,18 +149,15 @@ public class Main {
             int sideDist = 0;
             moved = false;
             if (input.keyDown('w')) {
-                character.move(1,0, walls);
                 moved = true;
                 forwardDist += 1;
 
             }
             if (input.keyDown('s')) {
-                character.move(-1,0, walls);
                 moved = true;
                 forwardDist -=1;
             }
             if (input.keyDown('a')) {
-                character.move(0,-1, walls);
                 moved = true;
                 sideDist -= 1;
             }
@@ -187,7 +182,7 @@ public class Main {
                 }
             }
 
-        character.move(forwardDist * Consts.PLAYER_SPEED_MULTIPLIER,sideDist * Consts.PLAYER_SPEED_MULTIPLIER, walls);
+            character.move(forwardDist * Consts.PLAYER_SPEED_MULTIPLIER,sideDist * Consts.PLAYER_SPEED_MULTIPLIER, walls);
 
 
 
@@ -198,6 +193,9 @@ public class Main {
                 running = false;
             }
             frameCount++;
+            if (Consts.ONE_FRAME_RENDERING) {
+                running = false;
+            }
         }
 
     }

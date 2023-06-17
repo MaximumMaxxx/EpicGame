@@ -103,11 +103,11 @@ public class DrawingUtils {
                 // it is the maximum distance that the player can see, so it'll work
                 double characterAngle = character.getAngle();
                 Point characterPoint = character.getPoint();
-                Point shiftedPlayerpos = new Point(characterPoint.getX()+5,characterPoint.getY()+5);
-                Point p1 = MathUtils.pointAlongAngle(characterAngle+90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
-                Point p2 = MathUtils.pointAlongAngle(characterAngle-90, Consts.PLAYER_MAX_VIEW_DISTANCE, shiftedPlayerpos);
+                Point p1 = MathUtils.pointAlongAngle(characterAngle+90, Consts.PLAYER_MAX_VIEW_DISTANCE, character.getPoint());
+                Point p2 = MathUtils.pointAlongAngle(characterAngle-90, Consts.PLAYER_MAX_VIEW_DISTANCE, character.getPoint());
 
                 if (Consts.DEBUG_RENDERING) {
+                    playerLine.draw(g);
                     Line playerLineForPerpIntersection = new Line(p1, p2);
                     g.setColor(Color.RED);
                     playerLineForPerpIntersection.draw(g);
